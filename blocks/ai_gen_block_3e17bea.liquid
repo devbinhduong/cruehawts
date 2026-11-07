@@ -1,0 +1,338 @@
+{% doc %}
+  @prompt
+    Create an editorial style button with sophisticated typography, minimal design, and elegant hover effects. The button should have a clean, magazine-like aesthetic with refined spacing, subtle transitions, and a premium feel that works well for fashion or luxury brands.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-editorial-button-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-editorial-button-{{ ai_gen_id }} {
+      width: {{ block.settings.desktop_width_percent }}%;
+    }
+  }
+
+  .ai-editorial-button-link-{{ ai_gen_id }} {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: {{ block.settings.padding_vertical }}px {{ block.settings.padding_horizontal }}px;
+    background-color: {{ block.settings.background_color }};
+    color: {{ block.settings.text_color }};
+    text-decoration: none;
+    border: {{ block.settings.border_width }}px solid {{ block.settings.border_color }};
+    font-family: {{ block.settings.button_font.family }}, {{ block.settings.button_font.fallback_families }};
+    font-weight: {{ block.settings.button_font.weight }};
+    font-size: {{ block.settings.font_size }}px;
+    letter-spacing: {{ block.settings.letter_spacing }}px;
+    text-transform: {% if block.settings.text_transform == 'uppercase' %}uppercase{% else %}none{% endif %};
+    transition: all {{ block.settings.transition_speed }}s ease;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .ai-editorial-button-link-{{ ai_gen_id }}::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background-color: {{ block.settings.hover_background_color }};
+    transition: left {{ block.settings.transition_speed }}s ease;
+    z-index: 0;
+  }
+
+  .ai-editorial-button-link-{{ ai_gen_id }}:hover::before {
+    left: 0;
+  }
+
+  .ai-editorial-button-link-{{ ai_gen_id }}:hover {
+    color: {{ block.settings.hover_text_color }};
+    border-color: {{ block.settings.hover_border_color }};
+  }
+
+  .ai-editorial-button-text-{{ ai_gen_id }} {
+    position: relative;
+    z-index: 1;
+  }
+
+  .ai-editorial-button-underline-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: {{ block.settings.underline_offset }}px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: {{ block.settings.underline_thickness }}px;
+    background-color: {{ block.settings.hover_text_color }};
+    transition: width {{ block.settings.transition_speed }}s ease;
+    z-index: 1;
+  }
+
+  .ai-editorial-button-link-{{ ai_gen_id }}:hover .ai-editorial-button-underline-{{ ai_gen_id }} {
+    width: {{ block.settings.underline_width }}%;
+  }
+{% endstyle %}
+
+<editorial-button-{{ ai_gen_id }}
+  class="ai-editorial-button-{{ ai_gen_id }}"
+  {{ block.shopify_attributes }}
+>
+  <a
+    href="{{ block.settings.button_link }}"
+    class="ai-editorial-button-link-{{ ai_gen_id }}"
+  >
+    <span class="ai-editorial-button-text-{{ ai_gen_id }}">
+      {{ block.settings.button_text }}
+    </span>
+    {% if block.settings.show_underline %}
+      <span class="ai-editorial-button-underline-{{ ai_gen_id }}"></span>
+    {% endif %}
+  </a>
+</editorial-button-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class EditorialButton{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        const link = this.querySelector('.ai-editorial-button-link-{{ ai_gen_id }}');
+        
+        link.addEventListener('mouseenter', function() {
+          this.style.transform = 'translateY(-1px)';
+        });
+
+        link.addEventListener('mouseleave', function() {
+          this.style.transform = 'translateY(0)';
+        });
+      }
+    }
+
+    customElements.define('editorial-button-{{ ai_gen_id }}', EditorialButton{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Editorial button",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Discover collection"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "font_picker",
+      "id": "button_font",
+      "label": "Font",
+      "default": "helvetica_n4"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Font size",
+      "min": 10,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "letter_spacing",
+      "label": "Letter spacing",
+      "min": 0,
+      "max": 5,
+      "step": 0.5,
+      "unit": "px",
+      "default": 1.5
+    },
+    {
+      "type": "select",
+      "id": "text_transform",
+      "label": "Text transform",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "uppercase",
+          "label": "Uppercase"
+        }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_vertical",
+      "label": "Vertical padding",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding_horizontal",
+      "label": "Horizontal padding",
+      "min": 16,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "border_width",
+      "label": "Border width",
+      "min": 0,
+      "max": 4,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "header",
+      "content": "Hover colors"
+    },
+    {
+      "type": "color",
+      "id": "hover_background_color",
+      "label": "Background",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "hover_text_color",
+      "label": "Text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "hover_border_color",
+      "label": "Border",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Underline effect"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_underline",
+      "label": "Show underline on hover",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "underline_width",
+      "label": "Underline width",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "underline_thickness",
+      "label": "Underline thickness",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "underline_offset",
+      "label": "Underline offset",
+      "min": 4,
+      "max": 16,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "range",
+      "id": "transition_speed",
+      "label": "Transition speed",
+      "min": 0.1,
+      "max": 1,
+      "step": 0.1,
+      "unit": "s",
+      "default": 0.4
+    }
+  ],
+  "presets": [
+    {
+      "name": "Editorial button"
+    }
+  ],
+  "tag": null
+}
+{% endschema %}

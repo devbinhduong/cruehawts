@@ -1,0 +1,471 @@
+{% doc %}
+  @prompt
+    A magazine-style editorial button, i want to align the button in the middle, i want have the alignment feature for the button, now i want to have the custom mobile width feature, now i want a custom vertical alignment for desktop
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-editorial-button-{{ ai_gen_id }} {
+    display: flex;
+    {% if block.settings.alignment == 'left' %}
+      justify-content: flex-start;
+    {% elsif block.settings.alignment == 'center' %}
+      justify-content: center;
+    {% else %}
+      justify-content: flex-end;
+    {% endif %}
+    width: 100%;
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-editorial-button-{{ ai_gen_id }} {
+      {% if block.settings.desktop_vertical_alignment == 'top' %}
+        align-items: flex-start;
+      {% elsif block.settings.desktop_vertical_alignment == 'center' %}
+        align-items: center;
+      {% else %}
+        align-items: flex-end;
+      {% endif %}
+    }
+  }
+
+  .ai-editorial-button-link-{{ ai_gen_id }} {
+    position: relative;
+    display: inline-block;
+    text-decoration: none;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    width: {{ block.settings.mobile_width_percent }}%;
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-editorial-button-link-{{ ai_gen_id }} {
+      width: {{ block.settings.desktop_width_percent }}%;
+    }
+  }
+
+  .ai-editorial-button-content-{{ ai_gen_id }} {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: {{ block.settings.padding_vertical }}px {{ block.settings.padding_horizontal }}px;
+    background-color: {{ block.settings.background_color }};
+    border: {{ block.settings.border_width }}px solid {{ block.settings.border_color }};
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .ai-editorial-button-link-{{ ai_gen_id }}:hover .ai-editorial-button-content-{{ ai_gen_id }} {
+    background-color: {{ block.settings.hover_background_color }};
+    border-color: {{ block.settings.hover_border_color }};
+    transform: translateX({{ block.settings.hover_shift }}px);
+  }
+
+  .ai-editorial-button-text-wrapper-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .ai-editorial-button-label-{{ ai_gen_id }} {
+    font-size: {{ block.settings.label_size }}px;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: {{ block.settings.label_color }};
+    transition: color 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .ai-editorial-button-link-{{ ai_gen_id }}:hover .ai-editorial-button-label-{{ ai_gen_id }} {
+    color: {{ block.settings.hover_label_color }};
+  }
+
+  .ai-editorial-button-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_size }}px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: {{ block.settings.title_color }};
+    transition: color 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .ai-editorial-button-link-{{ ai_gen_id }}:hover .ai-editorial-button-title-{{ ai_gen_id }} {
+    color: {{ block.settings.hover_title_color }};
+  }
+
+  .ai-editorial-button-arrow-{{ ai_gen_id }} {
+    flex-shrink: 0;
+    width: {{ block.settings.arrow_size }}px;
+    height: {{ block.settings.arrow_size }}px;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .ai-editorial-button-link-{{ ai_gen_id }}:hover .ai-editorial-button-arrow-{{ ai_gen_id }} {
+    transform: translateX(8px);
+  }
+
+  .ai-editorial-button-arrow-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    stroke: {{ block.settings.arrow_color }};
+    transition: stroke 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .ai-editorial-button-link-{{ ai_gen_id }}:hover .ai-editorial-button-arrow-{{ ai_gen_id }} svg {
+    stroke: {{ block.settings.hover_arrow_color }};
+  }
+
+  .ai-editorial-button-underline-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: {{ block.settings.underline_height }}px;
+    background-color: {{ block.settings.underline_color }};
+    transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .ai-editorial-button-link-{{ ai_gen_id }}:hover .ai-editorial-button-underline-{{ ai_gen_id }} {
+    width: 100%;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-editorial-button-content-{{ ai_gen_id }} {
+      padding: {{ block.settings.padding_vertical | times: 0.8 }}px {{ block.settings.padding_horizontal | times: 0.8 }}px;
+    }
+
+    .ai-editorial-button-label-{{ ai_gen_id }} {
+      font-size: {{ block.settings.label_size | times: 0.9 }}px;
+    }
+
+    .ai-editorial-button-title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.title_size | times: 0.85 }}px;
+    }
+
+    .ai-editorial-button-arrow-{{ ai_gen_id }} {
+      width: {{ block.settings.arrow_size | times: 0.8 }}px;
+      height: {{ block.settings.arrow_size | times: 0.8 }}px;
+    }
+  }
+{% endstyle %}
+
+<editorial-button-{{ ai_gen_id }} class="ai-editorial-button-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <a
+    href="{{ block.settings.button_link }}"
+    class="ai-editorial-button-link-{{ ai_gen_id }}"
+  >
+    <div class="ai-editorial-button-content-{{ ai_gen_id }}">
+      <div class="ai-editorial-button-text-wrapper-{{ ai_gen_id }}">
+        {% if block.settings.label != blank %}
+          <span class="ai-editorial-button-label-{{ ai_gen_id }}">{{ block.settings.label }}</span>
+        {% endif %}
+        {% if block.settings.title != blank %}
+          <span class="ai-editorial-button-title-{{ ai_gen_id }}">{{ block.settings.title }}</span>
+        {% endif %}
+      </div>
+      <div class="ai-editorial-button-arrow-{{ ai_gen_id }}">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </div>
+    </div>
+    <div class="ai-editorial-button-underline-{{ ai_gen_id }}"></div>
+  </a>
+</editorial-button-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class EditorialButton{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.link = this.querySelector('.ai-editorial-button-link-{{ ai_gen_id }}');
+      }
+    }
+
+    customElements.define('editorial-button-{{ ai_gen_id }}', EditorialButton{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Editorial button",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Label",
+      "default": "Featured"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Explore the Collection"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Horizontal alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "desktop_vertical_alignment",
+      "label": "Desktop vertical alignment",
+      "options": [
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "mobile_width_percent",
+      "label": "Mobile width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "padding_vertical",
+      "label": "Vertical padding",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "padding_horizontal",
+      "label": "Horizontal padding",
+      "min": 20,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Label"
+    },
+    {
+      "type": "range",
+      "id": "label_size",
+      "label": "Size",
+      "min": 8,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 11
+    },
+    {
+      "type": "color",
+      "id": "label_color",
+      "label": "Color",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "hover_label_color",
+      "label": "Hover color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Title"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Size",
+      "min": 16,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "hover_title_color",
+      "label": "Hover color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Arrow"
+    },
+    {
+      "type": "range",
+      "id": "arrow_size",
+      "label": "Size",
+      "min": 16,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "color",
+      "id": "arrow_color",
+      "label": "Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "hover_arrow_color",
+      "label": "Hover color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "hover_background_color",
+      "label": "Hover color",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "header",
+      "content": "Border"
+    },
+    {
+      "type": "range",
+      "id": "border_width",
+      "label": "Width",
+      "min": 0,
+      "max": 4,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Color",
+      "default": "#e0e0e0"
+    },
+    {
+      "type": "color",
+      "id": "hover_border_color",
+      "label": "Hover color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Underline"
+    },
+    {
+      "type": "range",
+      "id": "underline_height",
+      "label": "Height",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "unit": "px",
+      "default": 2
+    },
+    {
+      "type": "color",
+      "id": "underline_color",
+      "label": "Color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Hover effect"
+    },
+    {
+      "type": "range",
+      "id": "hover_shift",
+      "label": "Horizontal shift",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "default": 4
+    }
+  ],
+  "presets": [
+    {
+      "name": "Editorial button"
+    }
+  ]
+}
+{% endschema %}
