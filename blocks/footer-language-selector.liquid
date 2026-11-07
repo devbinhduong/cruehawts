@@ -1,0 +1,49 @@
+{% if localization.available_languages.size > 1 %}
+  <div class="footer-language-selector" {{ block.shopify_attributes }}>
+    {% render 'localization-form',
+      show_country: false,
+      show_language: true,
+      localization_style: 'footer',
+      block_id: block.id
+    %}
+  </div>
+{% endif %}
+
+{% stylesheet %}
+  .footer-language-selector {
+    width: 100%;
+  }
+
+  .footer-language-selector localization-form-component {
+    width: 100%;
+  }
+
+  .footer-language-selector .language-selector {
+    padding: 0;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    position: relative;
+  }
+
+  .footer-language-selector .localization-form__select {
+    text-align: left;
+    width: 100%;
+    max-width: 100%;
+    padding: 8px 32px 8px 12px;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+  }
+
+  .footer-language-selector .language-selector .svg-wrapper.icon-caret {
+    pointer-events: none;
+    z-index: 0;
+    right: 10px;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Footer Language Selector"
+}
+{% endschema %}

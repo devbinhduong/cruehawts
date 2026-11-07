@@ -1,0 +1,176 @@
+<div class="footer-social-dropdown" {{ block.shopify_attributes }}>
+  <details class="footer-social-dropdown__details">
+    <summary class="footer-social-dropdown__summary">
+      <span>{{ block.settings.heading | default: 'Select' }}</span>
+      <span class="svg-wrapper icon-caret">
+        {{- 'icon-caret.svg' | inline_asset_content -}}
+      </span>
+    </summary>
+    <ul class="footer-social-dropdown__list list-unstyled">
+      {%- if settings.social_instagram_link != blank -%}
+        <li>
+          <a href="{{ settings.social_instagram_link }}" target="_blank" rel="noopener noreferrer">
+            <span class="svg-wrapper">{{- 'icon-instagram.svg' | inline_asset_content -}}</span>
+            Instagram
+          </a>
+        </li>
+      {%- endif -%}
+      {%- if settings.social_facebook_link != blank -%}
+        <li>
+          <a href="{{ settings.social_facebook_link }}" target="_blank" rel="noopener noreferrer">
+            <span class="svg-wrapper">{{- 'icon-facebook.svg' | inline_asset_content -}}</span>
+            Facebook
+          </a>
+        </li>
+      {%- endif -%}
+      {%- if settings.social_youtube_link != blank -%}
+        <li>
+          <a href="{{ settings.social_youtube_link }}" target="_blank" rel="noopener noreferrer">
+            <span class="svg-wrapper">{{- 'icon-youtube.svg' | inline_asset_content -}}</span>
+            Youtube
+          </a>
+        </li>
+      {%- endif -%}
+      {%- if settings.social_tiktok_link != blank -%}
+        <li>
+          <a href="{{ settings.social_tiktok_link }}" target="_blank" rel="noopener noreferrer">
+            <span class="svg-wrapper">{{- 'icon-tiktok.svg' | inline_asset_content -}}</span>
+            TikTok
+          </a>
+        </li>
+      {%- endif -%}
+      {%- if settings.social_twitter_link != blank -%}
+        <li>
+          <a href="{{ settings.social_twitter_link }}" target="_blank" rel="noopener noreferrer">
+            <span class="svg-wrapper">{{- 'icon-x.svg' | inline_asset_content -}}</span>
+            X
+          </a>
+        </li>
+      {%- endif -%}
+      {%- if settings.social_pinterest_link != blank -%}
+        <li>
+          <a href="{{ settings.social_pinterest_link }}" target="_blank" rel="noopener noreferrer">
+            <span class="svg-wrapper">{{- 'icon-pinterest.svg' | inline_asset_content -}}</span>
+            Pinterest
+          </a>
+        </li>
+      {%- endif -%}
+      {%- if settings.social_snapchat_link != blank -%}
+        <li>
+          <a href="{{ settings.social_snapchat_link }}" target="_blank" rel="noopener noreferrer">
+            <span class="svg-wrapper">{{- 'icon-snapchat.svg' | inline_asset_content -}}</span>
+            Snapchat
+          </a>
+        </li>
+      {%- endif -%}
+      {%- if settings.social_tumblr_link != blank -%}
+        <li>
+          <a href="{{ settings.social_tumblr_link }}" target="_blank" rel="noopener noreferrer">
+            <span class="svg-wrapper">{{- 'icon-tumblr.svg' | inline_asset_content -}}</span>
+            Tumblr
+          </a>
+        </li>
+      {%- endif -%}
+      {%- if settings.social_vimeo_link != blank -%}
+        <li>
+          <a href="{{ settings.social_vimeo_link }}" target="_blank" rel="noopener noreferrer">
+            <span class="svg-wrapper">{{- 'icon-vimeo.svg' | inline_asset_content -}}</span>
+            Vimeo
+          </a>
+        </li>
+      {%- endif -%}
+    </ul>
+  </details>
+</div>
+
+{% stylesheet %}
+  .footer-social-dropdown {
+    width: 100%;
+  }
+
+  .footer-social-dropdown__details {
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    position: relative;
+  }
+
+  .footer-social-dropdown__summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    list-style: none;
+    user-select: none;
+  }
+
+  .footer-social-dropdown__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .footer-social-dropdown__summary .icon-caret {
+    width: var(--icon-size-xs);
+    height: var(--icon-size-xs);
+    transition: transform 0.2s ease;
+    display: flex;
+    align-items: center;
+  }
+
+  .footer-social-dropdown__details[open] .icon-caret svg {
+    transform: rotate(180deg);
+  }
+
+  .footer-social-dropdown__list {
+    padding: 4px 0 8px;
+    margin: 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .footer-social-dropdown__list li {
+    list-style: none;
+  }
+
+  .footer-social-dropdown__list a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    font-size: 0.875rem;
+    color: var(--color-foreground);
+    text-decoration: none;
+    transition: background-color 0.15s ease;
+  }
+
+  .footer-social-dropdown__list a:hover {
+    background-color: rgb(var(--color-foreground-rgb) / 0.05);
+  }
+
+  .footer-social-dropdown__list .svg-wrapper {
+    display: flex;
+    align-items: center;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+
+  .footer-social-dropdown__list .svg-wrapper svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Footer Social Dropdown",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Select"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,41 @@
+{% if localization.available_countries.size > 1 %}
+  <div class="footer-country-selector" {{ block.shopify_attributes }}>
+    {% render 'localization-form',
+      show_country: true,
+      show_language: false,
+      localization_style: 'footer',
+      block_id: block.id
+    %}
+  </div>
+{% endif %}
+
+{% stylesheet %}
+  .footer-country-selector {
+    width: 100%;
+  }
+
+  .footer-country-selector localization-form-component {
+    width: 100%;
+  }
+
+  .footer-country-selector .localization-form {
+    width: 100%;
+  }
+
+  .footer-country-selector .country-selector-form__wrapper {
+    border: 1px solid var(--color-border);
+    max-height: 220px;
+    overflow-y: auto;
+    border-radius: 4px;
+  }
+
+  .footer-country-selector .localization-form__list {
+    padding-block: var(--padding-2xs);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Footer Country Selector"
+}
+{% endschema %}
