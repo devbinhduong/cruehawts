@@ -197,6 +197,11 @@
       if settings.product_card_carousel == false
         assign slideshow_attributes = slideshow_attributes | append: ' disabled="true"'
       endif
+
+      assign visible_media_count = all_media.size
+      if visible_media_count > max_visible_slide_count
+        assign visible_media_count = max_visible_slide_count
+      endif
     %}
     <a
       class="contents"
@@ -213,6 +218,16 @@
         attributes: slideshow_attributes
       %}
     </a>
+
+    {% if settings.product_card_carousel and visible_media_count > 1 %}
+      <div class="card-gallery-dots-wrapper">
+        <div class="card-gallery-dots" aria-hidden="true">
+          {% for i in (1..visible_media_count) %}
+            <span class="card-gallery-dots__dot{% if forloop.first %} card-gallery-dots__dot--active{% endif %}" data-index="{{ forloop.index0 }}"></span>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
   {% elsif product != blank and product.media.size == 0 %}
     <product-title class="product-card-gallery__title-placeholder">
       <a
@@ -246,6 +261,7 @@
 {% stylesheet %}
   .card-gallery {
     overflow: hidden;
+    position: relative;
     container-type: inline-size; /* Make card-gallery a container */
     container-name: card-gallery-container; /* Optional: name the container */
   }
@@ -402,4 +418,56 @@
     padding: var(--padding-xs) !important;
     font-size: var(--font-size--xs);
   }
+
+  /* Dots indicator */
+  .card-gallery-dots-wrapper {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 50%;
+    height: 40px;
+    z-index: 10;
+    pointer-events: auto; /* block all clicks in this zone */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .card-gallery-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    pointer-events: none; /* let wrapper handle blocking, dots handle their own */
+  }
+
+  .card-gallery-dots__dot {
+    display: block;
+    width: 20px;
+    height: 4px;
+    border-radius: 2px;
+    background-color: rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s ease, width 0.2s ease;
+    pointer-events: auto;
+    cursor: pointer;
+    position: relative;
+    z-index: 11;
+  }
+
+  .card-gallery-dots__dot--active {
+    background-color: #ffffff;
+    width: 28px;
+  }
+
+  /* For light background images, use dark dots */
+  .card-gallery:not(:has(slideshow-component[style*='background'])) .card-gallery-dots__dot {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+
+  .card-gallery:not(:has(slideshow-component[style*='background'])) .card-gallery-dots__dot--active {
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+
 {% endstylesheet %}
