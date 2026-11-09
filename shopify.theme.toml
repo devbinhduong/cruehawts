@@ -1,6 +1,5 @@
 [environments.mint]
-theme = "189988307260"
+theme = "189999677756"
 store = "mint-dev-demo"
 ignore = ["*.scss","assets/dist", "*.json"]
 theme-editor-sync = true
-store-password = "dev123"

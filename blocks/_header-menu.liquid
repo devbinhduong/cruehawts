@@ -72,7 +72,8 @@
       style="--submenu-animation-speed: {{ animation_speed }}ms;{{ title_case_style }}"
     >
       <div class="header-menu__inner">
-        {%- render 'header-menu' %}
+        {%- assign mega_menu_blocks = section.blocks | where: 'type', 'mega-menu-content' -%}
+        {%- render 'header-menu', mega_menu_blocks: mega_menu_blocks %}
       </div>
 
       <script
@@ -549,10 +550,10 @@
   }
 
   .mega-menu__content-list--collections {
-    grid-template-columns: repeat(var(--menu-content-columns-tablet), minmax(0, 300px));
+    grid-template-columns: repeat(var(--menu-content-columns-tablet), minmax(0, 1fr));
 
     @media screen and (min-width: 990px) {
-      grid-template-columns: repeat(var(--menu-content-columns-desktop), minmax(0, 300px));
+      grid-template-columns: repeat(var(--menu-content-columns-desktop), minmax(0, 1fr));
     }
   }
 
@@ -678,6 +679,10 @@
           "label": "t:options.auto"
         },
         {
+          "value": "4 / 5",
+          "label": "t:options.portrait"
+        },
+        {
           "value": "16 / 9",
           "label": "t:options.landscape"
         },
@@ -686,7 +691,7 @@
           "label": "t:options.square"
         }
       ],
-      "default": "16 / 9",
+      "default": "4 / 5",
       "visible_if": "{{ block.settings.menu_style == 'featured_collections' }}"
     },
     {

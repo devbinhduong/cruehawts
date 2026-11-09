@@ -1,0 +1,122 @@
+{%- comment -%}
+  This block renders hidden data elements that header-menu.liquid reads via data attributes.
+  The trigger_name is matched against nav link titles (case-insensitive).
+{%- endcomment -%}
+
+<div
+  class="mega-menu-content-data"
+  data-trigger="{{ block.settings.trigger_name | downcase | strip }}"
+  data-banner-1-image="{% if block.settings.banner_1_image %}{{ block.settings.banner_1_image | image_url: width: 800 }}{% endif %}"
+  data-banner-1-label="{{ block.settings.banner_1_label | escape }}"
+  data-banner-1-link="{{ block.settings.banner_1_link }}"
+  data-banner-2-image="{% if block.settings.banner_2_image %}{{ block.settings.banner_2_image | image_url: width: 800 }}{% endif %}"
+  data-banner-2-label="{{ block.settings.banner_2_label | escape }}"
+  data-banner-2-link="{{ block.settings.banner_2_link }}"
+  data-banner-3-image="{% if block.settings.banner_3_image %}{{ block.settings.banner_3_image | image_url: width: 800 }}{% endif %}"
+  data-banner-3-label="{{ block.settings.banner_3_label | escape }}"
+  data-banner-3-link="{{ block.settings.banner_3_link }}"
+  data-banner-4-image="{% if block.settings.banner_4_image %}{{ block.settings.banner_4_image | image_url: width: 800 }}{% endif %}"
+  data-banner-4-label="{{ block.settings.banner_4_label | escape }}"
+  data-banner-4-link="{{ block.settings.banner_4_link }}"
+  style="display:none"
+  {{ block.shopify_attributes }}
+></div>
+
+{% schema %}
+{
+  "name": "Mega Menu Content",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Trigger"
+    },
+    {
+      "type": "text",
+      "id": "trigger_name",
+      "label": "Menu item name",
+      "info": "Enter the exact name of the nav item as it appears in the menu. E.g. 'Top', 'New Collection'. Case-insensitive."
+    },
+    {
+      "type": "header",
+      "content": "Banner 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "banner_1_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "banner_1_label",
+      "label": "Label"
+    },
+    {
+      "type": "url",
+      "id": "banner_1_link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Banner 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "banner_2_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "banner_2_label",
+      "label": "Label"
+    },
+    {
+      "type": "url",
+      "id": "banner_2_link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Banner 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "banner_3_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "banner_3_label",
+      "label": "Label"
+    },
+    {
+      "type": "url",
+      "id": "banner_3_link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Banner 4"
+    },
+    {
+      "type": "image_picker",
+      "id": "banner_4_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "banner_4_label",
+      "label": "Label"
+    },
+    {
+      "type": "url",
+      "id": "banner_4_link",
+      "label": "Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Mega Menu Content"
+    }
+  ]
+}
+{% endschema %}

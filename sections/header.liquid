@@ -650,6 +650,9 @@ model-viewer.min.js"></script>
   </script>
 {% endunless %}
 
+{% comment %} Render dynamic theme blocks (e.g. mega-menu-content) — data only, no visual output {% endcomment %}
+{% content_for 'blocks' %}
+
 {% schema %}
 {
   "name": "t:names.header",
@@ -1080,6 +1083,11 @@ model-viewer.min.js"></script>
       ],
       "default": "default",
       "visible_if": "{{ section.settings.enable_transparent_header_collection }}"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@theme"
     }
   ],
   "presets": []

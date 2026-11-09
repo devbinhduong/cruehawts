@@ -1,6 +1,43 @@
 
 {% render 'button', link: block.settings.link %}
 
+{% if block.settings.custom_styles %}
+  {% style %}
+    .{{ block.settings.style_class }}--{{ block.id }} {
+      {% if block.settings.custom_bg != blank %}
+        --button-background-color: {{ block.settings.custom_bg }};
+      {% endif %}
+      {% if block.settings.custom_color != blank %}
+        --button-color: {{ block.settings.custom_color }};
+      {% endif %}
+      {% if block.settings.custom_border_color != blank %}
+        --button-border-color: {{ block.settings.custom_border_color }};
+      {% endif %}
+      {% if block.settings.custom_font_size != blank %}
+        font-size: {{ block.settings.custom_font_size }};
+      {% endif %}
+      {% if block.settings.custom_padding_v > 0 %}
+        --button-padding-block: {{ block.settings.custom_padding_v }}px;
+      {% endif %}
+      {% if block.settings.custom_padding_h > 0 %}
+        --button-padding-inline: {{ block.settings.custom_padding_h }}px;
+      {% endif %}
+    }
+
+    .{{ block.settings.style_class }}--{{ block.id }}:hover {
+      {% if block.settings.custom_hover_bg != blank %}
+        --button-background-color: {{ block.settings.custom_hover_bg }};
+      {% endif %}
+      {% if block.settings.custom_hover_color != blank %}
+        --button-color: {{ block.settings.custom_hover_color }};
+      {% endif %}
+      {% if block.settings.custom_hover_border_color != blank %}
+        --button-border-color: {{ block.settings.custom_hover_border_color }};
+      {% endif %}
+    }
+  {% endstyle %}
+{% endif %}
+
 {% schema %}
 {
   "name": "t:names.button",
@@ -100,6 +137,91 @@
       "unit": "%",
       "default": 100,
       "visible_if": "{{ block.settings.width_mobile == \"custom\" }}"
+    },
+    {
+      "type": "header",
+      "content": "Custom styles"
+    },
+    {
+      "type": "checkbox",
+      "id": "custom_styles",
+      "label": "Enable custom styles",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Default state",
+      "visible_if": "{{ block.settings.custom_styles }}"
+    },
+    {
+      "type": "color",
+      "id": "custom_bg",
+      "label": "Background",
+      "visible_if": "{{ block.settings.custom_styles }}"
+    },
+    {
+      "type": "color",
+      "id": "custom_color",
+      "label": "Text color",
+      "visible_if": "{{ block.settings.custom_styles }}"
+    },
+    {
+      "type": "color",
+      "id": "custom_border_color",
+      "label": "Border color",
+      "visible_if": "{{ block.settings.custom_styles }}"
+    },
+    {
+      "type": "text",
+      "id": "custom_font_size",
+      "label": "Font size",
+      "info": "E.g. 1rem, 14px, 0.875rem",
+      "visible_if": "{{ block.settings.custom_styles }}"
+    },
+    {
+      "type": "range",
+      "id": "custom_padding_v",
+      "label": "Padding vertical",
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ block.settings.custom_styles }}"
+    },
+    {
+      "type": "range",
+      "id": "custom_padding_h",
+      "label": "Padding horizontal",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ block.settings.custom_styles }}"
+    },
+    {
+      "type": "header",
+      "content": "Hover state",
+      "visible_if": "{{ block.settings.custom_styles }}"
+    },
+    {
+      "type": "color",
+      "id": "custom_hover_bg",
+      "label": "Background on hover",
+      "visible_if": "{{ block.settings.custom_styles }}"
+    },
+    {
+      "type": "color",
+      "id": "custom_hover_color",
+      "label": "Text color on hover",
+      "visible_if": "{{ block.settings.custom_styles }}"
+    },
+    {
+      "type": "color",
+      "id": "custom_hover_border_color",
+      "label": "Border color on hover",
+      "visible_if": "{{ block.settings.custom_styles }}"
     }
   ],
   "presets": [

@@ -24,7 +24,21 @@
 %}
 
 {% capture children %}
+  {% comment %} Build a lookup of trigger_name → block for mega-menu-content blocks {% endcomment %}
+  {% assign mega_menu_blocks = mega_menu_blocks | default: empty %}
+
   {% for link in block_settings.menu.links %}
+    {% comment %} Check if any mega-menu-content block targets this link handle {% endcomment %}
+    {% assign custom_mega_block = nil %}
+    {% for mmb in mega_menu_blocks %}
+      {% assign trigger_lower = mmb.settings.trigger_name | downcase | strip %}
+      {% assign link_title_lower = link.title | downcase | strip %}
+      {% if trigger_lower == link_title_lower %}
+        {% assign custom_mega_block = mmb %}
+        {% break %}
+      {% endif %}
+    {% endfor %}
+
     <li
       role="presentation"
       class="menu-list__list-item"
@@ -37,7 +51,7 @@
         href="{{ link.url }}"
         data-skip-node-update="true"
         class="menu-list__link{% if link.active %} menu-list__link--active{% endif %}"
-        {%- if link.links != blank -%}
+        {%- if link.links != blank or custom_mega_block != nil -%}
           aria-controls="submenu-{{ forloop.index }}"
           aria-haspopup="true"
           aria-expanded="false"
@@ -46,7 +60,18 @@
       >
         <span class="menu-list__link-title">{{- link.title -}}</span>
       </a>
-      {%- if link.links != blank -%}
+
+      {%- if custom_mega_block != nil -%}
+        <div class="menu-list__submenu{{ color_scheme_classes }}" ref="submenu[]">
+          <div
+            id="submenu-{{ forloop.index }}"
+            class="menu-list__submenu-inner"
+            style="{% render 'submenu-font-styles', settings: block_settings %}"
+          >
+            {% render 'mega-menu-custom', block: custom_mega_block, link: link %}
+          </div>
+        </div>
+      {%- elsif link.links != blank -%}
         <div class="menu-list__submenu{{ color_scheme_classes }}" ref="submenu[]">
           <div
             id="submenu-{{ forloop.index }}"

@@ -26,6 +26,15 @@
     {% render 'border-override', settings: settings %}
     {% render 'spacing-style', settings: settings %}
     {% render 'size-style', settings: settings %}
+    {% if settings.background_image_aspect_ratio and settings.background_image_aspect_ratio != 'none' %}
+      {% if settings.background_image_aspect_ratio == 'adapt' %}
+        {% if settings.background_image and settings.background_image.aspect_ratio %}
+          aspect-ratio: {{ settings.background_image.aspect_ratio }};
+        {% endif %}
+      {% else %}
+        aspect-ratio: {{ settings.background_image_aspect_ratio }};
+      {% endif %}
+    {% endif %}
     {{ style }}
   "
   {{ shopify_attributes }}

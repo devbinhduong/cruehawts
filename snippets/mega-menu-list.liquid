@@ -229,22 +229,22 @@
   endif
 
   if menu_content_type == 'featured_collections'
-    # desktop breakpoint
-    assign min_featured_collection_columns = min_collections | times: 2
+    # desktop breakpoint — allow up to 4 collection columns
+    assign min_featured_collection_columns = min_collections | times: 1
     assign temp_column_count = column_count | plus: min_featured_collection_columns
 
     if temp_column_count > max_menu_columns
-      assign max_collection_columns = 2
+      assign max_collection_columns = 4
     else
       assign max_collection_columns = max_menu_columns | minus: column_count
     endif
 
-    assign max_featured_collections = max_collection_columns | divided_by: 2 | floor
+    assign max_featured_collections = max_collection_columns | at_most: 4
     assign max_menu_columns = max_menu_columns | minus: max_collection_columns
 
     # tablet breakpoint
-    assign max_collection_columns_tablet = 2
-    assign max_featured_collections_tablet = 1
+    assign max_collection_columns_tablet = 3
+    assign max_featured_collections_tablet = 3
     assign max_menu_columns_tablet = max_menu_columns_tablet | minus: max_collection_columns_tablet
   endif
 %}

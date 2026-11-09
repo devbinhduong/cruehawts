@@ -1,0 +1,163 @@
+{%- doc -%}
+  Renders a custom mega menu with banner images for a specific menu item.
+  Matched via trigger_name from a mega-menu-content block.
+
+  @param {object} block - The mega-menu-content block
+  @param {object} link  - The nav link this submenu belongs to
+{%- enddoc -%}
+
+<div class="mega-menu-custom section section--full-width-margin section--{{ section.settings.section_width }}">
+  <div class="mega-menu-custom__inner">
+
+    {%- comment -%} Left: sub-links from the nav menu {%- endcomment -%}
+    {% if link.links != blank %}
+      <ul class="mega-menu-custom__links list-unstyled">
+        {% for child in link.links %}
+          <li>
+            <a
+              href="{{ child.url }}"
+              class="mega-menu-custom__link{% if child.active %} mega-menu-custom__link--active{% endif %}"
+            >
+              {{- child.title -}}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    {%- comment -%} Right: 4 banner columns from block settings {%- endcomment -%}
+    <div class="mega-menu-custom__banners">
+      {% for i in (1..4) %}
+        {% case i %}
+          {% when 1 %}
+            {% assign banner_image = block.settings.banner_1_image %}
+            {% assign banner_label = block.settings.banner_1_label %}
+            {% assign banner_link  = block.settings.banner_1_link %}
+          {% when 2 %}
+            {% assign banner_image = block.settings.banner_2_image %}
+            {% assign banner_label = block.settings.banner_2_label %}
+            {% assign banner_link  = block.settings.banner_2_link %}
+          {% when 3 %}
+            {% assign banner_image = block.settings.banner_3_image %}
+            {% assign banner_label = block.settings.banner_3_label %}
+            {% assign banner_link  = block.settings.banner_3_link %}
+          {% when 4 %}
+            {% assign banner_image = block.settings.banner_4_image %}
+            {% assign banner_label = block.settings.banner_4_label %}
+            {% assign banner_link  = block.settings.banner_4_link %}
+        {% endcase %}
+
+        {% if banner_image != blank or request.design_mode or banner_label != blank %}
+          <a
+            href="{{ banner_link | default: '#' }}"
+            class="mega-menu-custom__banner"
+          >
+            <div class="mega-menu-custom__banner-image">
+              {% if banner_image != blank %}
+                {{
+                  banner_image
+                  | image_url: width: 400
+                  | image_tag:
+                    loading: 'lazy',
+                    widths: '200, 300, 400',
+                    sizes: '(min-width: 990px) 20vw, 45vw',
+                    class: 'mega-menu-custom__img'
+                }}
+              {% else %}
+                <div class="mega-menu-custom__img-placeholder"></div>
+              {% endif %}
+            </div>
+            {% if banner_label != blank %}
+              <span class="mega-menu-custom__banner-label">{{ banner_label }}</span>
+            {% endif %}
+          </a>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+  </div>
+</div>
+
+{% stylesheet %}
+  .mega-menu-custom__inner {
+    display: flex;
+    gap: 48px;
+    padding-block: var(--padding-3xl);
+    padding-inline: var(--section-padding-inline);
+    max-height: calc(80vh - var(--header-height));
+    overflow-y: auto;
+  }
+
+  /* Left nav links */
+  .mega-menu-custom__links {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 120px;
+    flex-shrink: 0;
+  }
+
+  .mega-menu-custom__link {
+    font-family: var(--menu-child-font-family);
+    font-size: var(--menu-child-font-size);
+    color: var(--menu-child-font-color);
+    text-decoration: none;
+    padding-block: var(--padding-2xs);
+    display: block;
+    transition: color var(--animation-speed) var(--animation-easing);
+  }
+
+  .mega-menu-custom__link:hover,
+  .mega-menu-custom__link--active {
+    color: var(--menu-child-active-font-color);
+  }
+
+  /* Right banners */
+  .mega-menu-custom__banners {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    flex: 1;
+
+    @media screen and (max-width: 989px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .mega-menu-custom__banner {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--color-foreground);
+  }
+
+  .mega-menu-custom__banner-image {
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background-color: var(--color-border);
+  }
+
+  .mega-menu-custom__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+
+  .mega-menu-custom__banner:hover .mega-menu-custom__img {
+    transform: scale(1.04);
+  }
+
+  .mega-menu-custom__img-placeholder {
+    width: 100%;
+    height: 100%;
+    background-color: rgb(var(--color-foreground-rgb) / 0.08);
+  }
+
+  .mega-menu-custom__banner-label {
+    font-size: 0.8125rem;
+    color: var(--color-foreground);
+  }
+{% endstylesheet %}
