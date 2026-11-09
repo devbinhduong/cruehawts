@@ -27,10 +27,13 @@
       style="{{ title_case_style }}"
       {{ block.shopify_attributes }}
     >
+      {% assign mega_menu_blocks = section.blocks | where: 'type', 'mega-menu-content' %}
       {% render 'header-drawer',
         class: 'header__drawer--mobile',
         linklist: block_settings.menu,
-        data_header_drawer_type: 'mobile-drawer'
+        data_header_drawer_type: 'mobile-drawer',
+        mega_menu_blocks: mega_menu_blocks,
+        section: section
       %}
     </div>
 
@@ -610,6 +613,15 @@
   .mega-menu__submenu {
     /* preserves the inherited grid layout when this submenu wrapper is used */
     display: contents;
+  }
+
+  /* Mobile mega menu banners */
+  .menu-drawer__mega-banners {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: var(--drawer-padding);
+    padding-block-start: var(--padding-md);
   }
 {% endstylesheet %}
 

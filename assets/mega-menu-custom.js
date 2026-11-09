@@ -1,6 +1,7 @@
 /**
  * Mega Menu Custom
- * Injects custom banner mega menu after header section hydration completes.
+ * Desktop: Injects custom banner mega menu after header section hydration.
+ * Mobile: Injects banners into accordion items in the mobile drawer.
  */
 
 (function () {
@@ -23,7 +24,9 @@
       </a>`).join('');
   }
 
-  function inject() {
+  // ─── DESKTOP ───────────────────────────────────────────────────────────────
+
+  function injectDesktop() {
     const dataBlocks = document.querySelectorAll('.mega-menu-content-data');
     if (!dataBlocks.length) return;
 
@@ -60,7 +63,6 @@
         item.appendChild(submenu);
       }
 
-      // Extract sub-links from existing default mega menu
       let subLinksHtml = '';
       const existingLinks = submenu.querySelectorAll('.mega-menu__link');
       if (existingLinks.length) {
@@ -84,21 +86,66 @@
     });
   }
 
+  // ─── MOBILE ────────────────────────────────────────────────────────────────
+
+  function injectMobile() {
+    const dataBlocks = document.querySelectorAll('.mega-menu-content-data');
+    if (!dataBlocks.length) return;
+
+    const drawer = document.querySelector('header-drawer');
+    if (!drawer) return;
+
+    // Find all accordion items (both levels < 3 and 3-level menus)
+    const accordionDetails = drawer.querySelectorAll(
+      'accordion-custom details, .menu-drawer__menu-container details'
+    );
+
+    accordionDetails.forEach((details) => {
+      if (details.dataset.mobileInjected) return;
+
+      const summary = details.querySelector('summary');
+      if (!summary) return;
+
+      const titleEl = summary.querySelector('.menu-drawer__menu-item-text');
+      if (!titleEl) return;
+
+      const linkTitle = titleEl.textContent.trim().toLowerCase();
+
+      let matchedBlock = null;
+      dataBlocks.forEach((block) => {
+        const trigger = (block.getAttribute('data-trigger') || '').toLowerCase().trim();
+        if (trigger === linkTitle) matchedBlock = block;
+      });
+
+      if (!matchedBlock) return;
+
+      const bannersHtml = buildBannersHtml(matchedBlock);
+      if (!bannersHtml) return;
+
+      details.dataset.mobileInjected = '1';
+
+      const bannerDiv = document.createElement('div');
+      bannerDiv.className = 'menu-drawer__mega-banners';
+      bannerDiv.innerHTML = bannersHtml;
+      details.appendChild(bannerDiv);
+    });
+  }
+
+  // ─── INIT ──────────────────────────────────────────────────────────────────
+
   function waitForHydration() {
-    // Find header section element
     const headerSection = document.querySelector('.header-section');
     if (!headerSection) {
       setTimeout(waitForHydration, 100);
       return;
     }
 
-    // If already hydrated, inject immediately
     if (headerSection.dataset.hydrated === 'true') {
-      inject();
+      injectDesktop();
+      injectMobile();
       return;
     }
 
-    // Watch for hydration to complete
     const observer = new MutationObserver((mutations) => {
       for (const mutation of mutations) {
         if (
@@ -107,7 +154,8 @@
           headerSection.dataset.hydrated === 'true'
         ) {
           observer.disconnect();
-          inject();
+          injectDesktop();
+          injectMobile();
           return;
         }
       }
@@ -115,12 +163,19 @@
 
     observer.observe(headerSection, { attributes: true });
 
-    // Fallback: also try injecting after 2s in case hydration already happened
     setTimeout(() => {
       observer.disconnect();
-      inject();
+      injectDesktop();
+      injectMobile();
     }, 2000);
   }
+
+  // Re-inject mobile when accordion opens (details toggle)
+  document.addEventListener('toggle', (e) => {
+    if (e.target.closest('header-drawer')) {
+      injectMobile();
+    }
+  }, true);
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', waitForHydration);
