@@ -2380,5 +2380,77 @@
         "label": "Vimeo"
       }
     ]
+  },
+  {
+    "name": "Animations",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable_animations",
+        "label": "Enable advanced animations",
+        "info": "Uses GSAP for smooth entrance animations and hover effects. May slightly increase page load time.",
+        "default": false
+      },
+      {
+        "type": "header",
+        "content": "Entrance animations",
+        "visible_if": "{{ settings.enable_animations }}"
+      },
+      {
+        "type": "select",
+        "id": "animation_style",
+        "label": "Style",
+        "options": [
+          { "value": "fade-up", "label": "Fade up" },
+          { "value": "fade-in", "label": "Fade in" },
+          { "value": "slide-left", "label": "Slide from left" },
+          { "value": "scale-up", "label": "Scale up" }
+        ],
+        "default": "fade-up",
+        "visible_if": "{{ settings.enable_animations }}"
+      },
+      {
+        "type": "range",
+        "id": "animation_duration",
+        "label": "Duration",
+        "min": 300,
+        "max": 1500,
+        "step": 100,
+        "unit": "ms",
+        "default": 700,
+        "visible_if": "{{ settings.enable_animations }}"
+      },
+      {
+        "type": "range",
+        "id": "animation_stagger",
+        "label": "Stagger delay",
+        "info": "Delay between each element animating in",
+        "min": 0,
+        "max": 300,
+        "step": 25,
+        "unit": "ms",
+        "default": 100,
+        "visible_if": "{{ settings.enable_animations }}"
+      },
+      {
+        "type": "header",
+        "content": "Hover effects",
+        "visible_if": "{{ settings.enable_animations }}"
+      },
+      {
+        "type": "checkbox",
+        "id": "animation_hover_banners",
+        "label": "Banner hover zoom",
+        "default": true,
+        "visible_if": "{{ settings.enable_animations }}"
+      },
+      {
+        "type": "checkbox",
+        "id": "animation_hover_buttons",
+        "label": "Button hover lift",
+        "default": true,
+        "visible_if": "{{ settings.enable_animations }}"
+      }
+    ]
   }
 ]

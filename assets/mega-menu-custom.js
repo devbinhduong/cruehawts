@@ -50,6 +50,14 @@
       const bannersHtml = buildBannersHtml(matchedBlock);
       if (!bannersHtml) return;
 
+      // Read layout settings
+      const linksWidthAttr = matchedBlock.getAttribute('data-links-width') || '20';
+      const parsedWidth = parseInt(linksWidthAttr, 10);
+      const linksWidthPct = isNaN(parsedWidth) ? 20 : parsedWidth;
+      const bannersWidthPct = linksWidthPct <= 0 ? 100 : Math.max(0, 100 - linksWidthPct);
+      const bannerColumns = matchedBlock.getAttribute('data-banner-columns') || '4';
+      const bannerGap = matchedBlock.getAttribute('data-banner-gap') || '16';
+
       item.dataset.megaInjected = '1';
       link.setAttribute('aria-haspopup', 'true');
       link.setAttribute('aria-controls', link.getAttribute('aria-controls') || `submenu-custom-${linkTitle}`);
@@ -63,23 +71,78 @@
         item.appendChild(submenu);
       }
 
+      // Check if server-side liquid already rendered .mega-menu-custom
+      const existingCustom = submenu.querySelector('.mega-menu-custom');
+      const existingSubLinks = submenu.querySelectorAll('.mega-menu-custom__link, .mega-menu__link');
+      const hasLinks = existingSubLinks.length > 0 && linksWidthPct > 0;
+
+      const gridCols = hasLinks
+        ? `minmax(0, ${linksWidthPct}fr) minmax(0, ${bannersWidthPct}fr)`
+        : 'minmax(0, 1fr)';
+
+      const bannersStyle = `grid-template-columns: repeat(${bannerColumns}, minmax(0, 1fr)); gap: ${bannerGap}px;`;
+
+      if (existingCustom) {
+        // Update layout styles & CSS variables without destroying server-rendered DOM
+        existingCustom.style.setProperty('--mm-links-pct', linksWidthPct);
+        existingCustom.style.setProperty('--mm-banners-pct', bannersWidthPct);
+        existingCustom.style.setProperty('--mm-banner-cols', bannerColumns);
+        existingCustom.style.setProperty('--mm-banner-gap', `${bannerGap}px`);
+        existingCustom.style.setProperty('--mm-grid-cols', gridCols);
+        existingCustom.style.width = '100%';
+
+        const inner = existingCustom.querySelector('.mega-menu-custom__inner');
+        if (inner) {
+          inner.style.display = 'grid';
+          inner.style.gridTemplateColumns = gridCols;
+          inner.style.gap = '48px';
+          inner.style.alignItems = 'start';
+          inner.style.width = '100%';
+          inner.style.boxSizing = 'border-box';
+          if (!hasLinks) {
+            inner.classList.add('mega-menu-custom__inner--no-links');
+            const linksEl = inner.querySelector('.mega-menu-custom__links');
+            if (linksEl) linksEl.style.display = 'none';
+          } else {
+            inner.classList.remove('mega-menu-custom__inner--no-links');
+            const linksEl = inner.querySelector('.mega-menu-custom__links');
+            if (linksEl) linksEl.style.display = '';
+          }
+        }
+
+        const bannersEl = existingCustom.querySelector('.mega-menu-custom__banners');
+        if (bannersEl) {
+          bannersEl.style.gridTemplateColumns = `repeat(${bannerColumns}, minmax(0, 1fr))`;
+          bannersEl.style.gap = `${bannerGap}px`;
+        }
+        return;
+      }
+
+      // If not server rendered, build sub-links HTML from existing links
       let subLinksHtml = '';
-      const existingLinks = submenu.querySelectorAll('.mega-menu__link');
-      if (existingLinks.length) {
-        subLinksHtml = '<ul class="mega-menu-custom__links list-unstyled">';
-        existingLinks.forEach((l) => {
-          const title = l.querySelector('.mega-menu__link-title')?.textContent.trim() || l.textContent.trim();
-          subLinksHtml += `<li><a href="${l.href}" class="mega-menu-custom__link">${title}</a></li>`;
+      if (hasLinks) {
+        const seen = new Set();
+        subLinksHtml = `<ul class="mega-menu-custom__links list-unstyled">`;
+        existingSubLinks.forEach((l) => {
+          const href = l.getAttribute('href') || '#';
+          const title = (l.querySelector('.mega-menu__link-title') || l).textContent.trim();
+          const key = href + '|' + title;
+          if (title && !seen.has(key)) {
+            seen.add(key);
+            subLinksHtml += `<li><a href="${href}" class="mega-menu-custom__link">${title}</a></li>`;
+          }
         });
         subLinksHtml += '</ul>';
       }
 
       submenu.innerHTML = `
         <div class="menu-list__submenu-inner">
-          <div class="mega-menu-custom section section--full-width-margin section--page-width">
-            <div class="mega-menu-custom__inner">
-              ${subLinksHtml}
-              <div class="mega-menu-custom__banners">${bannersHtml}</div>
+          <div class="mega-menu-custom section section--full-width-margin section--page-width"
+               style="--mm-links-pct: ${linksWidthPct}; --mm-banners-pct: ${bannersWidthPct}; --mm-banner-cols: ${bannerColumns}; --mm-banner-gap: ${bannerGap}px; --mm-grid-cols: ${gridCols}; width: 100%;">
+            <div class="mega-menu-custom__inner${hasLinks ? '' : ' mega-menu-custom__inner--no-links'}"
+                 style="display: grid; grid-template-columns: ${gridCols}; gap: 48px; align-items: start; width: 100%; box-sizing: border-box;">
+              ${hasLinks ? subLinksHtml : ''}
+              <div class="mega-menu-custom__banners" style="${bannersStyle} min-width: 0; width: 100%; box-sizing: border-box;">${bannersHtml}</div>
             </div>
           </div>
         </div>`;

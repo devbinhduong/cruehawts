@@ -6,11 +6,38 @@
   @param {object} link  - The nav link this submenu belongs to
 {%- enddoc -%}
 
-<div class="mega-menu-custom section section--full-width-margin section--{{ section.settings.section_width }}">
-  <div class="mega-menu-custom__inner">
+{% liquid
+  assign links_pct = block.settings.links_width | default: 20
+  assign banners_pct = 100 | minus: links_pct
+  assign banner_cols = block.settings.banner_columns | default: '4'
+  assign banner_gap = block.settings.banner_gap | default: 16
+  assign has_links = false
+  if link.links != blank and links_pct > 0
+    assign has_links = true
+  endif
+%}
+
+<div
+  class="mega-menu-custom section section--full-width-margin section--{{ section.settings.section_width }}"
+  style="
+    --mm-links-pct: {{ links_pct }};
+    --mm-banners-pct: {{ banners_pct }};
+    --mm-banner-cols: {{ banner_cols }};
+    --mm-banner-gap: {{ banner_gap }}px;
+    {% if has_links %}
+      --mm-grid-cols: minmax(0, {{ links_pct }}fr) minmax(0, {{ banners_pct }}fr);
+    {% else %}
+      --mm-grid-cols: minmax(0, 1fr);
+    {% endif %}
+  "
+>
+  <div
+    class="mega-menu-custom__inner{% unless has_links %} mega-menu-custom__inner--no-links{% endunless %}"
+    style="display: grid; grid-template-columns: var(--mm-grid-cols); gap: 48px; align-items: start;"
+  >
 
     {%- comment -%} Left: sub-links from the nav menu {%- endcomment -%}
-    {% if link.links != blank %}
+    {% if has_links %}
       <ul class="mega-menu-custom__links list-unstyled">
         {% for child in link.links %}
           <li>
@@ -26,7 +53,10 @@
     {% endif %}
 
     {%- comment -%} Right: 4 banner columns from block settings {%- endcomment -%}
-    <div class="mega-menu-custom__banners">
+    <div
+      class="mega-menu-custom__banners"
+      style="grid-template-columns: repeat({{ banner_cols }}, minmax(0, 1fr)); gap: {{ banner_gap }}px;"
+    >
       {% for i in (1..4) %}
         {% case i %}
           {% when 1 %}
@@ -79,13 +109,26 @@
 </div>
 
 {% stylesheet %}
+  .mega-menu-custom {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
   .mega-menu-custom__inner {
-    display: flex;
+    display: grid;
+    grid-template-columns: var(--mm-grid-cols, minmax(0, 1fr) minmax(0, 4fr));
     gap: 48px;
+    align-items: start;
     padding-block: var(--padding-3xl);
     padding-inline: var(--section-padding-inline);
     max-height: calc(80vh - var(--header-height));
     overflow-y: auto;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .mega-menu-custom__inner--no-links {
+    grid-template-columns: minmax(0, 1fr) !important;
   }
 
   /* Left nav links */
@@ -93,8 +136,10 @@
     display: flex;
     flex-direction: column;
     gap: 4px;
-    min-width: 120px;
-    flex-shrink: 0;
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
+    word-break: break-word;
   }
 
   .mega-menu-custom__link {
@@ -115,12 +160,14 @@
   /* Right banners */
   .mega-menu-custom__banners {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-    flex: 1;
+    grid-template-columns: repeat(var(--mm-banner-cols, 4), minmax(0, 1fr));
+    gap: var(--mm-banner-gap, 16px);
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
 
     @media screen and (max-width: 989px) {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
@@ -130,12 +177,14 @@
     gap: 10px;
     text-decoration: none;
     color: var(--color-foreground);
+    min-width: 0;
   }
 
   .mega-menu-custom__banner-image {
     aspect-ratio: 4 / 5;
     overflow: hidden;
     background-color: var(--color-border);
+    width: 100%;
   }
 
   .mega-menu-custom__img {
@@ -159,5 +208,7 @@
   .mega-menu-custom__banner-label {
     font-size: 0.8125rem;
     color: var(--color-foreground);
+    word-break: break-word;
+    overflow-wrap: break-word;
   }
 {% endstylesheet %}

@@ -1,5 +1,5 @@
 [environments.mint]
 theme = "189999677756"
-store = "mint-dev-demo"
+store = "mint-dev-demo.myshopify.com"
 ignore = ["*.scss","assets/dist", "*.json"]
 theme-editor-sync = true

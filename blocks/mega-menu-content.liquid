@@ -6,6 +6,9 @@
 <div
   class="mega-menu-content-data"
   data-trigger="{{ block.settings.trigger_name | downcase | strip }}"
+  data-links-width="{{ block.settings.links_width }}%"
+  data-banner-columns="{{ block.settings.banner_columns }}"
+  data-banner-gap="{{ block.settings.banner_gap }}"
   data-banner-1-image="{% if block.settings.banner_1_image %}{{ block.settings.banner_1_image | image_url: width: 800 }}{% endif %}"
   data-banner-1-label="{{ block.settings.banner_1_label | escape }}"
   data-banner-1-link="{{ block.settings.banner_1_link }}"
@@ -35,6 +38,43 @@
       "id": "trigger_name",
       "label": "Menu item name",
       "info": "Enter the exact name of the nav item as it appears in the menu. E.g. 'Top', 'New Collection'. Case-insensitive."
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "links_width",
+      "label": "Sub-menu links width (%)",
+      "info": "Percentage of total width for the left links column. Banners fill the rest. Set 0 to hide links.",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "unit": "%",
+      "default": 20
+    },
+    {
+      "type": "select",
+      "id": "banner_columns",
+      "label": "Banner columns",
+      "options": [
+        { "value": "1", "label": "1 column" },
+        { "value": "2", "label": "2 columns" },
+        { "value": "3", "label": "3 columns" },
+        { "value": "4", "label": "4 columns" }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "range",
+      "id": "banner_gap",
+      "label": "Gap between banners",
+      "min": 0,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "default": 16
     },
     {
       "type": "header",

@@ -98,6 +98,20 @@ src="https://www.facebook.com/tr?id=2598651040498995&ev=PageView&noscript=1"
 
     <script src="{{ 'card-gallery-dots.js' | asset_url }}" defer></script>
     <script src="{{ 'mega-menu-custom.js' | asset_url }}" defer></script>
+
+    {% if settings.enable_animations %}
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+      <script
+        src="{{ 'theme-animations.js' | asset_url }}"
+        defer
+        data-style="{{ settings.animation_style }}"
+        data-duration="{{ settings.animation_duration }}"
+        data-stagger="{{ settings.animation_stagger }}"
+        data-hover-banners="{{ settings.animation_hover_banners }}"
+        data-hover-buttons="{{ settings.animation_hover_buttons }}"
+      ></script>
+    {% endif %}
   </body>
 <!-- Loading Screen Script -->
 <script>
