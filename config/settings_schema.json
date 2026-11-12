@@ -2450,6 +2450,19 @@
         "label": "Button hover lift",
         "default": true,
         "visible_if": "{{ settings.enable_animations }}"
+      },
+      {
+        "type": "header",
+        "content": "Custom cursor",
+        "visible_if": "{{ settings.enable_animations }}"
+      },
+      {
+        "type": "checkbox",
+        "id": "animation_custom_cursor",
+        "label": "Enable minimalist custom cursor",
+        "info": "Smooth cursor follower with difference blend mode on desktop. Automatically disabled on touch screens.",
+        "default": true,
+        "visible_if": "{{ settings.enable_animations }}"
       }
     ]
   }

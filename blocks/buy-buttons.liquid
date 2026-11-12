@@ -224,6 +224,7 @@
   .product-form-buttons {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     gap: calc(var(--gap-sm) / 2);
 
     @media screen and (min-width: 750px) {
@@ -234,6 +235,9 @@
   .product-form-buttons > *:not(.quantity-selector) {
     flex: 1 1 185px;
     min-width: fit-content;
+    height: var(--height-buy-buttons);
+    display: flex;
+    align-items: stretch;
   }
 
   .product-form-buttons--stacked > *:not(.quantity-selector) {
@@ -266,6 +270,24 @@
   .quantity-selector,
   .add-to-cart-button {
     height: var(--height-buy-buttons);
+  }
+
+  .product-form-buttons add-to-cart-component {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: stretch;
+  }
+
+  .product-form-buttons .add-to-cart-button {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+  }
+
+  .product-form-buttons .add-to-cart-text--added {
+    position: absolute !important;
+    inset: 0 !important;
   }
 
   .product__pickup-availabilities {

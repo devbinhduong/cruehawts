@@ -14,6 +14,7 @@
     stagger: parseFloat(script?.dataset.stagger || 100) / 1000,
     hoverBanners: script?.dataset.hoverBanners !== 'false',
     hoverButtons: script?.dataset.hoverButtons !== 'false',
+    customCursor: script?.dataset.customCursor !== 'false',
   };
 
   // ─── Wait for GSAP ──────────────────────────────────────────────────────────
@@ -253,10 +254,16 @@
         z-index: -1;
         will-change: transform, opacity;
       }
-      /* Keep all direct children above the fill layer */
+      /* Keep all direct children above the fill layer without breaking absolute overlays like .add-to-cart-text--added */
       .btn-fill-wrap > *:not(.btn-fill-layer) {
-        position: relative;
         z-index: 1;
+      }
+      .btn-fill-wrap > *:not(.btn-fill-layer):not(.add-to-cart-text--added):not([aria-hidden='true']) {
+        position: relative;
+      }
+      .product-form-buttons .btn-fill-wrap > .add-to-cart-text--added {
+        position: absolute !important;
+        inset: 0 !important;
       }
     `;
     document.head.appendChild(fillStyle);
@@ -270,24 +277,31 @@
     };
   }
 
+  function ensureButtonFill(btn) {
+    let fill = btn.querySelector(':scope > .btn-fill-layer');
+    if (!fill) {
+      btn.classList.add('btn-fill-wrap');
+      const isSecondary = btn.classList.contains('button-secondary');
+      const fillColor = isSecondary
+        ? 'var(--color-secondary-button-hover-background, rgba(0,0,0,0.06))'
+        : 'var(--color-primary-button-hover-background, rgba(255,255,255,0.18))';
+
+      fill = document.createElement('span');
+      fill.className = 'btn-fill-layer';
+      fill.style.setProperty('--btn-fill-color', fillColor);
+      btn.appendChild(fill);
+    }
+    return fill;
+  }
+
   function addButtonHover(btn) {
+    ensureButtonFill(btn);
+
     if (btn.dataset.btnHoverInit) return;
     btn.dataset.btnHoverInit = '1';
 
-    btn.classList.add('btn-fill-wrap');
-
-    // Determine fill color based on button type
-    const isSecondary = btn.classList.contains('button-secondary');
-    const fillColor = isSecondary
-      ? 'var(--color-secondary-button-hover-background, rgba(0,0,0,0.06))'
-      : 'var(--color-primary-button-hover-background, rgba(255,255,255,0.18))';
-
-    const fill = document.createElement('span');
-    fill.className = 'btn-fill-layer';
-    fill.style.setProperty('--btn-fill-color', fillColor);
-    btn.appendChild(fill);
-
     btn.addEventListener('mouseenter', (e) => {
+      const fill = ensureButtonFill(btn);
       const pos = getRelativePos(e, btn);
       fill.style.setProperty('--fill-x', pos.x);
       fill.style.setProperty('--fill-y', pos.y);
@@ -300,7 +314,9 @@
     });
 
     btn.addEventListener('mouseleave', (e) => {
-      // Update exit position for smooth retreat
+      const fill = btn.querySelector(':scope > .btn-fill-layer');
+      if (!fill) return;
+
       const pos = getRelativePos(e, btn);
       fill.style.setProperty('--fill-x', pos.x);
       fill.style.setProperty('--fill-y', pos.y);
@@ -319,7 +335,18 @@
   function initButtonHover() {
     if (!config.hoverButtons) return;
     setupButtonFill();
-    document.querySelectorAll('.button:not(.button-unstyled):not(.skip-to-content-link), .button-secondary:not(.skip-to-content-link)').forEach(addButtonHover);
+    document.querySelectorAll('.button:not(.button-unstyled):not(.skip-to-content-link):not(.quick-add__button), .button-secondary:not(.skip-to-content-link):not(.quick-add__button)').forEach(addButtonHover);
+
+    // Global listener for dynamically added or morphed buttons (variant updates, quick-add modal, cart drawer)
+    if (!window.__btnHoverDelegated) {
+      window.__btnHoverDelegated = true;
+      document.addEventListener('pointerenter', (e) => {
+        const btn = e.target.closest?.('.button:not(.button-unstyled):not(.skip-to-content-link):not(.quick-add__button), .button-secondary:not(.skip-to-content-link):not(.quick-add__button)');
+        if (btn) {
+          addButtonHover(btn);
+        }
+      }, true);
+    }
   }
 
   // ─── Hover: mega menu text links & banner cards ──────────────────────────────
@@ -424,6 +451,126 @@
     gsap.fromTo(main, { opacity: 0 }, { opacity: 1, duration: 0.4, ease: 'power2.out' });
   }
 
+  // ─── Custom cursor (Minimalist Inversion Follower) ───────────────────────────
+  function initCustomCursor() {
+    if (!config.customCursor) return;
+    if (window.matchMedia('(hover: none), (pointer: coarse)').matches) return;
+
+    const follower = document.createElement('div');
+    follower.className = 'custom-cursor-follower';
+    follower.setAttribute('aria-hidden', 'true');
+
+    const dot = document.createElement('div');
+    dot.className = 'custom-cursor-dot';
+    dot.setAttribute('aria-hidden', 'true');
+
+    document.body.appendChild(follower);
+    document.body.appendChild(dot);
+
+    gsap.set([follower, dot], { xPercent: -50, yPercent: -50, opacity: 0 });
+
+    const xFollower = gsap.quickTo(follower, 'x', { duration: 0.32, ease: 'power3.out' });
+    const yFollower = gsap.quickTo(follower, 'y', { duration: 0.32, ease: 'power3.out' });
+    const xDot = gsap.quickTo(dot, 'x', { duration: 0.05, ease: 'power2.out' });
+    const yDot = gsap.quickTo(dot, 'y', { duration: 0.05, ease: 'power2.out' });
+
+    let isVisible = false;
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isVisible) {
+        isVisible = true;
+        gsap.to([follower, dot], { opacity: 1, duration: 0.25 });
+      }
+      xFollower(e.clientX);
+      yFollower(e.clientY);
+      xDot(e.clientX);
+      yDot(e.clientY);
+    });
+
+    document.addEventListener('mouseleave', () => {
+      isVisible = false;
+      gsap.to([follower, dot], { opacity: 0, duration: 0.25 });
+    });
+
+    document.addEventListener('mouseenter', () => {
+      isVisible = true;
+      gsap.to([follower, dot], { opacity: 1, duration: 0.25 });
+    });
+
+    const interactiveSelector = `
+      a, button, [role="button"], input[type="submit"], input[type="button"],
+      .product-card, .card-gallery, summary, .clickable, label[for],
+      .quantity-selector button, .menu-list__link, .mega-menu-custom__banner,
+      .badge, select
+    `;
+
+    document.addEventListener('pointerover', (e) => {
+      const target = e.target;
+      if (!(target instanceof Element)) return;
+
+      // Hide cursor over text input fields so typing is unobscured
+      if (target.matches('input[type="text"], input[type="email"], input[type="password"], input[type="search"], input[type="number"], textarea')) {
+        gsap.to(follower, { scale: 0, opacity: 0, duration: 0.2, overwrite: 'auto' });
+        gsap.to(dot, { scale: 0, opacity: 0, duration: 0.2, overwrite: 'auto' });
+        return;
+      }
+
+      if (target.closest(interactiveSelector)) {
+        follower.classList.add('is-hovering');
+        gsap.to(follower, {
+          scale: 2.1,
+          duration: 0.3,
+          ease: 'power2.out',
+          overwrite: 'auto'
+        });
+        gsap.to(dot, {
+          scale: 0,
+          duration: 0.2,
+          overwrite: 'auto'
+        });
+      }
+    });
+
+    document.addEventListener('pointerout', (e) => {
+      const target = e.target;
+      if (!(target instanceof Element)) return;
+
+      if (target.matches('input[type="text"], input[type="email"], input[type="password"], input[type="search"], input[type="number"], textarea')) {
+        if (isVisible) {
+          gsap.to(follower, { scale: 1, opacity: 1, duration: 0.2, overwrite: 'auto' });
+          gsap.to(dot, { scale: 1, opacity: 1, duration: 0.2, overwrite: 'auto' });
+        }
+        return;
+      }
+
+      const interactive = target.closest(interactiveSelector);
+      if (interactive && !interactive.contains(e.relatedTarget)) {
+        follower.classList.remove('is-hovering');
+        gsap.to(follower, {
+          scale: 1,
+          duration: 0.3,
+          ease: 'power2.out',
+          overwrite: 'auto'
+        });
+        gsap.to(dot, {
+          scale: 1,
+          duration: 0.2,
+          overwrite: 'auto'
+        });
+      }
+    });
+
+    // Subtle press reaction
+    window.addEventListener('mousedown', () => {
+      gsap.to(follower, { scale: 0.85, duration: 0.15, ease: 'power2.out', overwrite: 'auto' });
+    });
+
+    window.addEventListener('mouseup', () => {
+      const isHover = follower.classList.contains('is-hovering');
+      gsap.to(follower, { scale: isHover ? 2.1 : 1, duration: 0.25, ease: 'power2.out', overwrite: 'auto' });
+    });
+  }
+
   // ─── Bootstrap ──────────────────────────────────────────────────────────────
   waitForGSAP(() => {
     initPageTransition();
@@ -433,11 +580,54 @@
     initButtonHover();
     initMegaMenuHover();
     watchMegaMenuOpen();
+    initCustomCursor();
   });
 
   // CSS helpers
   const style = document.createElement('style');
   style.textContent = `
+    /* ── Minimalist Custom Cursor ── */
+    .custom-cursor-follower {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.95);
+      mix-blend-mode: difference;
+      pointer-events: none !important;
+      z-index: 9999999;
+      transform: translate3d(-50%, -50%, 0);
+      will-change: transform, opacity;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .custom-cursor-dot {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background-color: #ffffff;
+      mix-blend-mode: difference;
+      pointer-events: none !important;
+      z-index: 10000000;
+      transform: translate3d(-50%, -50%, 0);
+      will-change: transform;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    @media (hover: none) or (pointer: coarse) {
+      .custom-cursor-follower,
+      .custom-cursor-dot {
+        display: none !important;
+      }
+    }
+
     .mega-menu-custom__banner-image { overflow: hidden; }
     .mega-menu-custom__img { transform-origin: center; will-change: transform; }
     .mega-menu-custom__link { display: inline-block; will-change: transform; }

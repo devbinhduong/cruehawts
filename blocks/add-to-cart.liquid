@@ -14,8 +14,9 @@
 %}
 
 <span
+  class="add-to-cart-block-wrapper"
   {{ block.shopify_attributes }}
-  style="--add-to-cart-font-case: {{ settings.button_text_case }};"
+  style="--add-to-cart-font-case: {{ settings.button_text_case }}; display: flex; flex: 1 1 185px; height: var(--height-buy-buttons); align-items: stretch;"
 >
   {% render 'add-to-cart-button',
     id: id,

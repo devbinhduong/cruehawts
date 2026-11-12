@@ -37,6 +37,10 @@ const MORPH_OPTIONS = {
       return true;
     }
 
+    if (oldNode instanceof Element && oldNode.classList.contains('btn-fill-layer')) {
+      return true;
+    }
+
     return false;
   },
   onBeforeUpdate(oldNode, newNode) {
