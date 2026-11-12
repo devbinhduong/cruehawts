@@ -38,7 +38,36 @@
           assign swatch_count = product_option.values | map: 'swatch' | compact | size
           assign variant_style = block_settings.variant_style
 
-          if swatch_count > 0 and block_settings.show_swatches
+          # Check if variants have images for this option
+          assign has_variant_images = false
+          if settings.show_variant_image
+            for val in product_option.values
+              if val.variant.featured_media != blank
+                assign has_variant_images = true
+                break
+              endif
+            endfor
+            if has_variant_images == false
+              for variant in product_resource.variants
+                for val in product_option.values
+                  if variant.options contains val.name and variant.featured_media != blank
+                    assign has_variant_images = true
+                    break
+                  endif
+                endfor
+                if has_variant_images
+                  break
+                endif
+              endfor
+            endif
+          endif
+
+          assign is_swatch_option = false
+          if swatch_count > 0 or has_variant_images
+            assign is_swatch_option = true
+          endif
+
+          if is_swatch_option and block_settings.show_swatches
             if block_settings.variant_style == 'dropdown'
               assign variant_style = 'swatch_dropdown'
             else
@@ -91,6 +120,15 @@
                 {% if variant_style == 'swatch' %}
                   {% liquid
                     assign featured_media = product_option_value.variant.featured_media
+
+                    if featured_media == blank
+                      for variant in product_resource.variants
+                        if variant.options contains product_option_value.name and variant.featured_media != blank
+                          assign featured_media = variant.featured_media
+                          break
+                        endif
+                      endfor
+                    endif
 
                     # If the variant has no featured media, and we have a combined listing product, then fall back to
                     # using the featured media of the child product that is linked to this option value.

@@ -69,7 +69,7 @@ export default class ResultsList extends PaginatedList {
     if (!(targetElement instanceof HTMLInputElement)) return;
 
     targetElement.checked = true;
-    this.#setLayout('default');
+    this.#setLayout(targetElement.value || 'default');
   };
 }
 

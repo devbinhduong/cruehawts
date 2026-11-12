@@ -53,6 +53,38 @@
         }
     {% endcase %}
 
+    /* Custom 1, 2, 3, 4, 5 column views */
+    .product-grid:is([product-grid-view='1'], [product-grid-view='2'], [product-grid-view='3'], [product-grid-view='4'], [product-grid-view='5']) .product-grid__item {
+      grid-column: auto !important;
+      align-self: auto !important;
+    }
+
+    .product-grid:is([product-grid-view='1']) {
+      --product-grid-columns-desktop: repeat(1, minmax(0, 1fr)) !important;
+      max-width: 680px;
+      margin-inline: auto;
+    }
+
+    .product-grid:is([product-grid-view='2']) {
+      --product-grid-columns-desktop: repeat(2, minmax(0, 1fr)) !important;
+      max-width: 100%;
+    }
+
+    .product-grid:is([product-grid-view='3']) {
+      --product-grid-columns-desktop: repeat(3, minmax(0, 1fr)) !important;
+      max-width: 100%;
+    }
+
+    .product-grid:is([product-grid-view='4'], [product-grid-view='default']) {
+      --product-grid-columns-desktop: repeat(4, minmax(0, 1fr)) !important;
+      max-width: 100%;
+    }
+
+    .product-grid:is([product-grid-view='5']) {
+      --product-grid-columns-desktop: repeat(5, minmax(0, 1fr)) !important;
+      max-width: 100%;
+    }
+
     /* When zoomed out, fit as many 100px-wide columns as possible */
     .product-grid--{{ section.id }}:is([product-grid-view='zoom-out']) {
       --product-grid-columns-desktop: repeat(auto-fill, minmax(6.25rem, 1fr));

@@ -45,35 +45,102 @@
       </label>
 
     {% elsif viewport == 'desktop' %}
-      <label class="column-options__option">
+      <label class="column-options__option" title="1 column">
         <input
           type="radio"
           name="grid"
-          value="default"
+          value="1"
+          class="column-options__option-input"
+          aria-label="1 column"
+          on:change="results-list/updateLayout"
+          data-skip-node-update
+        >
+        <span class="column-picker column-picker--custom column-picker--1" aria-hidden="true">
+          <span class="col-box col-box--1">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+          </span>
+        </span>
+      </label>
+
+      <label class="column-options__option" title="2 columns">
+        <input
+          type="radio"
+          name="grid"
+          value="2"
+          class="column-options__option-input"
+          aria-label="2 columns"
+          on:change="results-list/updateLayout"
+          data-skip-node-update
+        >
+        <span class="column-picker column-picker--custom column-picker--2" aria-hidden="true">
+          <span class="col-box col-box--2">
+            <span class="bar"></span>
+            <span class="bar"></span>
+          </span>
+        </span>
+      </label>
+
+      <label class="column-options__option" title="3 columns">
+        <input
+          type="radio"
+          name="grid"
+          value="3"
+          class="column-options__option-input"
+          aria-label="3 columns"
+          on:change="results-list/updateLayout"
+          data-skip-node-update
+        >
+        <span class="column-picker column-picker--custom column-picker--3" aria-hidden="true">
+          <span class="col-box col-box--3">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+          </span>
+        </span>
+      </label>
+
+      <label class="column-options__option" title="4 columns">
+        <input
+          type="radio"
+          name="grid"
+          value="4"
           class="column-options__option-input"
           checked
-          aria-label="{{ 'content.grid_view.default_view' | t }}"
+          aria-label="4 columns"
           data-grid-layout="desktop-default-option"
           on:change="results-list/updateLayout"
           data-skip-node-update
         >
-        <span class="column-picker column-picker--default">
-          {{- 'icon-grid-default.svg' | inline_asset_content -}}
+        <span class="column-picker column-picker--custom column-picker--4" aria-hidden="true">
+          <span class="col-box col-box--4">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+          </span>
         </span>
       </label>
 
-      <label class="column-options__option">
+      <label class="column-options__option" title="5 columns">
         <input
           type="radio"
           name="grid"
-          value="zoom-out"
+          value="5"
           class="column-options__option-input"
-          aria-label="{{ 'content.grid_view.zoom_out' | t }}"
+          aria-label="5 columns"
           on:change="results-list/updateLayout"
           data-skip-node-update
         >
-        <span class="column-picker column-picker--zoom-out">
-          {{- 'icon-grid-dense.svg' | inline_asset_content -}}
+        <span class="column-picker column-picker--custom column-picker--5" aria-hidden="true">
+          <span class="col-box col-box--5">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+          </span>
         </span>
       </label>
     {% endif %}
@@ -111,20 +178,18 @@
 
   .column-options {
     display: flex;
-    flex-wrap: wrap;
-    gap: var(--gap-xs);
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 5px;
     margin: 0;
     padding: 0;
     border: none;
-
-    @media screen and (min-width: 750px) {
-      gap: var(--gap-2xs);
-    }
   }
 
   .column-options__option {
     display: none;
     position: relative;
+    cursor: pointer;
   }
 
   .column-options__option:has(.column-picker-mobile--single),
@@ -134,11 +199,18 @@
     }
   }
 
-  .column-options__option:has(.column-picker--default),
-  .column-options__option:has(.column-picker--zoom-out) {
+  .column-options__option:has(.column-picker--custom) {
     @media screen and (min-width: 750px) {
       display: flex;
     }
+  }
+
+  /* Explicitly hide any legacy grid density icon buttons */
+  .column-options__option:has(.column-picker--default),
+  .column-options__option:has(.column-picker--zoom-out),
+  .column-picker--default,
+  .column-picker--zoom-out {
+    display: none !important;
   }
 
   .column-options__legend {
@@ -147,15 +219,9 @@
   }
 
   .column-options__option-input {
-    /* this is a repeating pattern a bit with the variant picker buttons */
-
     /* remove the checkbox from the page flow */
     position: absolute;
-
-    /* set the dimensions to match those of the label */
     inset: 0;
-
-    /* hide it */
     opacity: 0;
     margin: 0;
     cursor: pointer;
@@ -175,5 +241,135 @@
   .column-options__option-input:checked ~ .column-picker {
     color: rgb(var(--color-foreground-rgb));
     background-color: rgb(var(--color-foreground-rgb) / var(--opacity-5));
+  }
+
+  /* Custom HTML/CSS Grid Density Icons (1, 2, 3, 4, 5 columns) */
+  .column-picker--custom {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px 2px;
+    background: transparent;
+    border-radius: 0;
+  }
+
+  .col-box {
+    display: flex;
+    box-sizing: border-box;
+    height: 19px;
+    border: 1px solid rgb(var(--color-foreground-rgb) / 0.35);
+    background: transparent;
+    border-radius: 0;
+    padding: 0;
+    transition: border-color var(--animation-speed) ease, box-shadow var(--animation-speed) ease;
+  }
+
+  /* 1 Column: 3 horizontal bars (equal 3px thickness, equal 2px gap, 3px left/right margins) */
+  .col-box--1 {
+    width: 22px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .col-box--1 .bar {
+    width: 14px;
+    height: 3px;
+    flex-shrink: 0;
+    background-color: rgb(var(--color-foreground-rgb) / 0.45);
+    border-radius: 0;
+    transition: background-color var(--animation-speed) ease;
+  }
+
+  /* 2 Columns: 2 vertical bars (equal 3px width, equal 2px gap, 3px left/right margins) */
+  .col-box--2 {
+    width: 16px;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .col-box--2 .bar {
+    width: 3px;
+    height: 13px;
+    flex-shrink: 0;
+    background-color: rgb(var(--color-foreground-rgb) / 0.45);
+    border-radius: 0;
+    transition: background-color var(--animation-speed) ease;
+  }
+
+  /* 3 Columns: 3 vertical bars (equal 3px width, equal 2px gap, 3px left/right margins) */
+  .col-box--3 {
+    width: 21px;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .col-box--3 .bar {
+    width: 3px;
+    height: 13px;
+    flex-shrink: 0;
+    background-color: rgb(var(--color-foreground-rgb) / 0.45);
+    border-radius: 0;
+    transition: background-color var(--animation-speed) ease;
+  }
+
+  /* 4 Columns: 4 vertical bars (equal 3px width, equal 2px gap, 3px left/right margins) */
+  .col-box--4 {
+    width: 26px;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .col-box--4 .bar {
+    width: 3px;
+    height: 13px;
+    flex-shrink: 0;
+    background-color: rgb(var(--color-foreground-rgb) / 0.45);
+    border-radius: 0;
+    transition: background-color var(--animation-speed) ease;
+  }
+
+  /* 5 Columns: 5 vertical bars (equal 3px width, equal 2px gap, 3px left/right margins) */
+  .col-box--5 {
+    width: 31px;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .col-box--5 .bar {
+    width: 3px;
+    height: 13px;
+    flex-shrink: 0;
+    background-color: rgb(var(--color-foreground-rgb) / 0.45);
+    border-radius: 0;
+    transition: background-color var(--animation-speed) ease;
+  }
+
+  /* Hover state */
+  .column-options__option:hover .col-box {
+    border-color: rgb(var(--color-foreground-rgb) / 0.7);
+  }
+
+  .column-options__option:hover .bar {
+    background-color: rgb(var(--color-foreground-rgb) / 0.75);
+  }
+
+  /* Checked / Active state matching user reference */
+  .column-options__option-input:checked ~ .column-picker--custom .col-box {
+    border-color: rgb(var(--color-foreground-rgb));
+    box-shadow: 0 0 0 0.5px rgb(var(--color-foreground-rgb));
+  }
+
+  .column-options__option-input:checked ~ .column-picker--custom .bar {
+    background-color: rgb(var(--color-foreground-rgb));
   }
 {% endstylesheet %}

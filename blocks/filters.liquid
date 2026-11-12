@@ -146,6 +146,43 @@
           ref="facetsForm"
         >
           {% if should_show_pane %}
+            {% assign desktop_layout = block_settings.desktop_filter_layout | default: 'drawer' %}
+
+            {% if block_settings.enable_filtering and block_settings.filter_style == 'horizontal' and desktop_layout == 'drawer' %}
+              <div class="facets-toggle__wrapper facets-toggle__wrapper--desktop">
+                <button
+                  class="button facets-toggle__button--desktop button-unstyled button-unstyled--with-icon"
+                  on:click="#filters-drawer/showDialog"
+                  type="button"
+                  aria-haspopup="dialog"
+                  aria-label="{{ 'actions.show_filters' | t }}"
+                >
+                  <span class="svg-wrapper">
+                    {{ 'icon-filter.svg' | inline_asset_content }}
+                  </span>
+
+                  <span class="facets-toggle__label">{{ 'actions.show_filters' | t }}</span>
+
+                  {% if total_active_values > 0 %}
+                    <div
+                      id="filter-count-bubble-toggle-desktop"
+                      class="filter-count-bubble"
+                      aria-label="{{ 'accessibility.filter_count' | t: count: total_active_values }}"
+                    >
+                      <span class="filter-count-bubble__background"></span>
+
+                      <span
+                        class="filter-count-bubble__text"
+                        aria-hidden="true"
+                      >
+                        {{ total_active_values }}
+                      </span>
+                    </div>
+                  {% endif %}
+                </button>
+              </div>
+            {% endif %}
+
             {% render 'filter-remove-buttons',
               filters: filters,
               results_url: results_url,
@@ -193,31 +230,33 @@
                 {%- endfor -%}
               {% endcapture %}
 
-              <div class="facets__filters-wrapper">
-                {% if block_settings.filter_style == 'horizontal' %}
-                  {% liquid
-                    assign more_attributes = 'on:click="#filters-drawer/showDialog"'
-                    if block_settings.text_label_case == 'uppercase'
-                      assign more_attributes = more_attributes | append: ' style="--text-transform: uppercase;"'
-                    endif
-                  %}
-                  {% render 'overflow-list',
-                    class: 'facets__overflow-list',
-                    children: rendered_filters,
-                    more-attributes: more_attributes,
-                    minimum-items: 2
-                  %}
-                {% else %}
-                  {{ rendered_filters }}
-                {% endif %}
-              </div>
+              {% if block_settings.filter_style != 'horizontal' or desktop_layout == 'inline' %}
+                <div class="facets__filters-wrapper">
+                  {% if block_settings.filter_style == 'horizontal' %}
+                    {% liquid
+                      assign more_attributes = 'on:click="#filters-drawer/showDialog"'
+                      if block_settings.text_label_case == 'uppercase'
+                        assign more_attributes = more_attributes | append: ' style="--text-transform: uppercase;"'
+                      endif
+                    %}
+                    {% render 'overflow-list',
+                      class: 'facets__overflow-list',
+                      children: rendered_filters,
+                      more-attributes: more_attributes,
+                      minimum-items: 2
+                    %}
+                  {% else %}
+                    {{ rendered_filters }}
+                  {% endif %}
+                </div>
 
-              {% render 'facets-actions',
-                results_url: results_url,
-                is_active: is_active,
-                products_count: products_count,
-                should_show_clear_all: should_show_vertical_clear_all
-              %}
+                {% render 'facets-actions',
+                  results_url: results_url,
+                  is_active: is_active,
+                  products_count: products_count,
+                  should_show_clear_all: should_show_vertical_clear_all
+                %}
+              {% endif %}
             {% endif %}
             {% if block_settings.filter_style == 'horizontal' %}
               <div class="products-count-wrapper">
@@ -1042,6 +1081,68 @@
   }
 
   /* Horizontal filter style */
+  .facets-toggle__wrapper--desktop {
+    display: none;
+
+    @media screen and (min-width: 750px) {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+  }
+
+  .facets-toggle__button--desktop {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--gap-xs);
+    cursor: pointer;
+    font-size: var(--font-paragraph--size);
+    font-weight: var(--font-paragraph--weight, 500);
+    text-transform: var(--facet-label-transform, none);
+    color: var(--color-foreground);
+    background: transparent;
+    border: 1px solid rgb(var(--color-foreground-rgb) / var(--opacity-20, 0.2));
+    border-radius: var(--style-border-radius-xs, 2px);
+    padding: 6px 14px;
+    height: 36px;
+    line-height: 1;
+    transition: all var(--animation-speed) ease;
+  }
+
+  .facets-toggle__button--desktop:hover {
+    border-color: rgb(var(--color-foreground-rgb) / 0.8);
+    background-color: rgb(var(--color-foreground-rgb) / 0.05);
+  }
+
+  .facets-toggle__button--desktop .svg-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+  }
+
+  .facets-toggle__button--desktop .svg-wrapper svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .facets-toggle__button--desktop .filter-count-bubble {
+    width: 20px;
+    height: 20px;
+    margin-left: 2px;
+  }
+
+  .facets--horizontal .facets-remove:has(facet-remove-component) {
+    @media screen and (min-width: 750px) {
+      display: flex;
+      align-items: center;
+      margin: 0;
+      flex-wrap: wrap;
+      gap: var(--gap-xs);
+    }
+  }
+
   .facets--horizontal .facets__form {
     @media screen and (min-width: 750px) {
       gap: 0 var(--facets-form-horizontal-gap);
@@ -1083,6 +1184,23 @@
       ],
       "default": "horizontal",
       "visible_if": "{{ block.settings.enable_filtering == true }}"
+    },
+    {
+      "type": "select",
+      "id": "desktop_filter_layout",
+      "label": "Desktop filter layout",
+      "options": [
+        {
+          "value": "drawer",
+          "label": "Show filter button (Sidebar / Drawer)"
+        },
+        {
+          "value": "inline",
+          "label": "Inline dropdowns"
+        }
+      ],
+      "default": "drawer",
+      "visible_if": "{{ block.settings.enable_filtering == true and block.settings.filter_style == 'horizontal' }}"
     },
     {
       "type": "select",
