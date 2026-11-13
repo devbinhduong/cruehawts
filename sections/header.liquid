@@ -575,6 +575,25 @@ model-viewer.min.js"></script>
     transition: opacity var(--animation-speed) var(--animation-easing);
   }
 
+  .dropdown-localization__button {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: var(--color-foreground) !important;
+    padding-inline: var(--padding-2xs) !important;
+    cursor: pointer !important;
+  }
+
+  .dropdown-localization__button .icon-caret {
+    display: inline-flex !important;
+    align-items: center !important;
+    position: static !important;
+    margin-inline-start: 4px !important;
+  }
+
   /* Extend hover area through padding to prevent flickering on actual menu items */
   .menu-list__list-item:where(:not([slot='overflow'])) > .menu-list__link[aria-haspopup],
   .menu-list__list-item:where(:not([slot='overflow'])) > .menu-list__link,

@@ -638,12 +638,11 @@
     /* ── Animated underline for plain <a> links (not buttons) ── */
     :is(
       p a,
-      li a:not(.button):not(.button-secondary):not(.menu-list__link):not(.menu-drawer__menu-item),
+      li a:not(.button):not(.button-secondary):not(.menu-list__link):not(.menu-drawer__menu-item):not(.mega-menu-custom__banner):not(.archive-card),
       .rte a,
       .link,
       .mega-menu-custom__link,
       .mega-menu__link,
-      .mega-menu-custom__banner-label,
       .menu-drawer__featured-content a,
       footer a:not(.button):not(.button-secondary)
     ) {
@@ -658,16 +657,24 @@
 
     :is(
       p a,
-      li a:not(.button):not(.button-secondary):not(.menu-list__link):not(.menu-drawer__menu-item),
+      li a:not(.button):not(.button-secondary):not(.menu-list__link):not(.menu-drawer__menu-item):not(.mega-menu-custom__banner):not(.archive-card),
       .rte a,
       .link,
       .mega-menu-custom__link,
       .mega-menu__link,
-      .mega-menu-custom__banner-label,
       .menu-drawer__featured-content a,
       footer a:not(.button):not(.button-secondary)
     ):hover {
       background-size: 100% 1px;
+    }
+
+    .mega-menu-custom__banner,
+    .mega-menu-custom__banner:hover,
+    .mega-menu-custom__banner *,
+    .mega-menu-custom__banner:hover * {
+      background-image: none !important;
+      text-decoration: none !important;
+      border-bottom: none !important;
     }
   `;
   document.head.appendChild(style);

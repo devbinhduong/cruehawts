@@ -87,11 +87,23 @@
             class="variant-option variant-option--buttons{% if variant_style == 'swatch' %} variant-option--swatches{% else %} variant-option--{{ settings.variant_button_width }}{% endif %}"
             {{ option_id_attribute }}
           >
-            <legend>
-              {{ product_option.name | escape -}}
-              {%- if variant_style == 'swatch' -%}
-                <span class="variant-option__swatch-value">{{ product_option.selected_value }}</span>
-              {%- endif %}
+            <legend class="variant-option__legend-header">
+              <span class="variant-option__title-wrapper">
+                <span class="variant-option__name">{{ product_option.name | escape }}</span>
+                {%- if variant_style == 'swatch' -%}
+                  : <span class="variant-option__swatch-value">{{ product_option.selected_value | upcase }}</span>
+                {%- endif %}
+              </span>
+              {%- assign opt_name_downcase = product_option.name | downcase -%}
+              {%- if opt_name_downcase contains 'size' -%}
+                <button
+                  type="button"
+                  class="variant-option__size-guide-trigger"
+                  onclick="const btn = document.querySelector('.popup-link__button'); if(btn){ btn.click(); } else { const d = document.querySelector('dialog-component.popup-link dialog'); if(d && d.showModal) d.showModal(); }"
+                >
+                  Size Guide
+                </button>
+              {%- endif -%}
             </legend>
             {%- for product_option_value in product_option.values -%}
               {% if product_option_value.size > longest_value and option_id_attribute %}
@@ -279,11 +291,44 @@
   .variant-option--buttons legend {
     padding: 0;
     margin-block-end: var(--margin-xs);
+    width: 100%;
+  }
+
+  .variant-option__legend-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .variant-option__title-wrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
   }
 
   .variant-option__swatch-value {
-    padding-inline-start: var(--padding-xs);
-    color: rgb(var(--color-foreground-rgb) / var(--opacity-70));
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--color-foreground);
+  }
+
+  .variant-option__size-guide-trigger {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: pointer;
+    color: var(--color-foreground);
+    letter-spacing: normal;
+  }
+
+  .variant-option__size-guide-trigger:hover {
+    opacity: 0.7;
   }
 
   .variant-option__button-label {

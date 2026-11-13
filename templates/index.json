@@ -20,8 +20,8 @@
             "open_in_new_tab": false,
             "content_direction": "row",
             "vertical_on_mobile": true,
-            "horizontal_alignment": "flex-start",
-            "vertical_alignment": "flex-end",
+            "horizontal_alignment": "center",
+            "vertical_alignment": "center",
             "align_baseline": true,
             "horizontal_alignment_flex_direction_column": "flex-start",
             "vertical_alignment_flex_direction_column": "center",
@@ -37,6 +37,7 @@
             "background_media": "none",
             "video_position": "cover",
             "background_image_position": "cover",
+            "background_image_aspect_ratio": "none",
             "border": "none",
             "border_width": 1,
             "border_opacity": 100,
@@ -52,35 +53,34 @@
             "padding-inline-end": 0
           },
           "blocks": {
-            "text_title": {
-              "type": "text",
-              "name": "Caption",
+            "button_h7j8gY": {
+              "type": "button",
+              "name": "t:names.button",
               "settings": {
-                "text": "<p>Monsport Collection</p>",
+                "label": "Monogram Collection",
+                "link": "shopify://collections/all",
+                "open_in_new_tab": false,
+                "style_class": "button",
                 "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "0.875rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100,
+                "custom_styles": true,
+                "custom_bg": "#ffffff",
+                "custom_color": "#000000",
+                "custom_border_color": "#EAEAEA",
+                "custom_font_size": "13px",
+                "custom_padding_v": 8,
+                "custom_padding_h": 32,
+                "custom_hover_bg": "#000000",
+                "custom_hover_color": "#FFFFFF",
+                "custom_hover_border_color": "#000000"
               },
               "blocks": {}
             }
           },
           "block_order": [
-            "text_title"
+            "button_h7j8gY"
           ]
         }
       },
@@ -92,7 +92,7 @@
         "media_type_1": "image",
         "image_1": "shopify://shop_images/home-slideshow.avif",
         "media_type_2": "image",
-        "link": "",
+        "link": "shopify://collections",
         "open_in_new_tab": false,
         "content_direction": "column",
         "vertical_on_mobile": true,
@@ -145,6 +145,7 @@
             "video_position": "cover",
             "background_image": "shopify://shop_images/home-collection-banner-1.png",
             "background_image_position": "cover",
+            "background_image_aspect_ratio": "adapt",
             "border": "none",
             "border_width": 1,
             "border_opacity": 100,
@@ -171,7 +172,17 @@
                 "width": "fit-content",
                 "custom_width": 100,
                 "width_mobile": "fit-content",
-                "custom_width_mobile": 100
+                "custom_width_mobile": 100,
+                "custom_styles": false,
+                "custom_bg": "",
+                "custom_color": "",
+                "custom_border_color": "",
+                "custom_font_size": "",
+                "custom_padding_v": 0,
+                "custom_padding_h": 0,
+                "custom_hover_bg": "",
+                "custom_hover_color": "",
+                "custom_hover_border_color": ""
               },
               "blocks": {}
             }
@@ -182,7 +193,7 @@
         },
         "group_kVTGNA": {
           "type": "group",
-          "name": "Banner 1",
+          "name": "Banner 2",
           "settings": {
             "link": "/collections/all",
             "open_in_new_tab": false,
@@ -206,6 +217,7 @@
             "video_position": "cover",
             "background_image": "shopify://shop_images/home-collection-banner-2.png",
             "background_image_position": "cover",
+            "background_image_aspect_ratio": "adapt",
             "border": "none",
             "border_width": 1,
             "border_opacity": 100,
@@ -232,7 +244,17 @@
                 "width": "fit-content",
                 "custom_width": 100,
                 "width_mobile": "fit-content",
-                "custom_width_mobile": 100
+                "custom_width_mobile": 100,
+                "custom_styles": false,
+                "custom_bg": "",
+                "custom_color": "",
+                "custom_border_color": "",
+                "custom_font_size": "",
+                "custom_padding_v": 0,
+                "custom_padding_h": 0,
+                "custom_hover_bg": "",
+                "custom_hover_color": "",
+                "custom_hover_border_color": ""
               },
               "blocks": {}
             }
@@ -243,7 +265,7 @@
         },
         "group_phnwAK": {
           "type": "group",
-          "name": "Banner 1",
+          "name": "Banner 3",
           "settings": {
             "link": "/collections/all",
             "open_in_new_tab": false,
@@ -267,6 +289,7 @@
             "video_position": "cover",
             "background_image": "shopify://shop_images/home-collection-banner-3_2353abcc-21dd-40b2-a895-a6daa492f018.png",
             "background_image_position": "cover",
+            "background_image_aspect_ratio": "adapt",
             "border": "none",
             "border_width": 1,
             "border_opacity": 100,
@@ -293,7 +316,17 @@
                 "width": "fit-content",
                 "custom_width": 100,
                 "width_mobile": "fit-content",
-                "custom_width_mobile": 100
+                "custom_width_mobile": 100,
+                "custom_styles": false,
+                "custom_bg": "",
+                "custom_color": "",
+                "custom_border_color": "",
+                "custom_font_size": "",
+                "custom_padding_v": 0,
+                "custom_padding_h": 0,
+                "custom_hover_bg": "",
+                "custom_hover_color": "",
+                "custom_hover_border_color": ""
               },
               "blocks": {}
             }
@@ -348,7 +381,7 @@
             "open_in_new_tab": false,
             "content_direction": "row",
             "vertical_on_mobile": true,
-            "horizontal_alignment": "flex-start",
+            "horizontal_alignment": "center",
             "vertical_alignment": "flex-end",
             "align_baseline": true,
             "horizontal_alignment_flex_direction_column": "flex-start",
@@ -365,6 +398,7 @@
             "background_media": "none",
             "video_position": "cover",
             "background_image_position": "cover",
+            "background_image_aspect_ratio": "none",
             "border": "none",
             "border_width": 1,
             "border_opacity": 100,
@@ -380,35 +414,34 @@
             "padding-inline-end": 0
           },
           "blocks": {
-            "text_sig": {
-              "type": "text",
-              "name": "Caption",
+            "button_7JBbzq": {
+              "type": "button",
+              "name": "t:names.button",
               "settings": {
-                "text": "<p>2024 Signature Collection</p>",
+                "label": "Monogram Collection",
+                "link": "shopify://collections/all",
+                "open_in_new_tab": false,
+                "style_class": "button",
                 "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "0.875rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100,
+                "custom_styles": true,
+                "custom_bg": "#ffffff",
+                "custom_color": "#000000",
+                "custom_border_color": "#EAEAEA",
+                "custom_font_size": "13px",
+                "custom_padding_v": 8,
+                "custom_padding_h": 32,
+                "custom_hover_bg": "#000000",
+                "custom_hover_color": "#FFFFFF",
+                "custom_hover_border_color": "#000000"
               },
               "blocks": {}
             }
           },
           "block_order": [
-            "text_sig"
+            "button_7JBbzq"
           ]
         }
       },
@@ -455,7 +488,7 @@
             "open_in_new_tab": false,
             "content_direction": "row",
             "vertical_on_mobile": true,
-            "horizontal_alignment": "flex-start",
+            "horizontal_alignment": "center",
             "vertical_alignment": "flex-end",
             "align_baseline": false,
             "horizontal_alignment_flex_direction_column": "flex-start",
@@ -472,6 +505,7 @@
             "background_media": "none",
             "video_position": "cover",
             "background_image_position": "cover",
+            "background_image_aspect_ratio": "none",
             "border": "none",
             "border_width": 1,
             "border_opacity": 100,
@@ -487,35 +521,34 @@
             "padding-inline-end": 0
           },
           "blocks": {
-            "text_left": {
-              "type": "text",
-              "name": "Caption left",
+            "button_hjNNEL": {
+              "type": "button",
+              "name": "t:names.button",
               "settings": {
-                "text": "<p>2024 Accessories</p>",
+                "label": "Monogram Collection",
+                "link": "shopify://collections/all",
+                "open_in_new_tab": false,
+                "style_class": "button",
                 "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "0.875rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100,
+                "custom_styles": true,
+                "custom_bg": "#ffffff",
+                "custom_color": "#000000",
+                "custom_border_color": "#EAEAEA",
+                "custom_font_size": "13px",
+                "custom_padding_v": 8,
+                "custom_padding_h": 32,
+                "custom_hover_bg": "#000000",
+                "custom_hover_color": "#FFFFFF",
+                "custom_hover_border_color": "#000000"
               },
               "blocks": {}
             }
           },
           "block_order": [
-            "text_left"
+            "button_hjNNEL"
           ]
         },
         "group_right": {
@@ -526,7 +559,7 @@
             "open_in_new_tab": false,
             "content_direction": "row",
             "vertical_on_mobile": true,
-            "horizontal_alignment": "flex-start",
+            "horizontal_alignment": "center",
             "vertical_alignment": "flex-end",
             "align_baseline": false,
             "horizontal_alignment_flex_direction_column": "flex-start",
@@ -543,6 +576,7 @@
             "background_media": "none",
             "video_position": "cover",
             "background_image_position": "cover",
+            "background_image_aspect_ratio": "none",
             "border": "none",
             "border_width": 1,
             "border_opacity": 100,
@@ -558,35 +592,34 @@
             "padding-inline-end": 0
           },
           "blocks": {
-            "text_right": {
-              "type": "text",
-              "name": "Caption right",
+            "button_TyYHfT": {
+              "type": "button",
+              "name": "t:names.button",
               "settings": {
-                "text": "<p>2024 Drops</p>",
+                "label": "Monogram Collection",
+                "link": "shopify://collections/all",
+                "open_in_new_tab": false,
+                "style_class": "button",
                 "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "0.875rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100,
+                "custom_styles": true,
+                "custom_bg": "#ffffff",
+                "custom_color": "#000000",
+                "custom_border_color": "#EAEAEA",
+                "custom_font_size": "13px",
+                "custom_padding_v": 8,
+                "custom_padding_h": 32,
+                "custom_hover_bg": "#000000",
+                "custom_hover_color": "#FFFFFF",
+                "custom_hover_border_color": "#000000"
               },
               "blocks": {}
             }
           },
           "block_order": [
-            "text_right"
+            "button_TyYHfT"
           ]
         }
       },
@@ -611,7 +644,7 @@
         "vertical_alignment_flex_direction_column": "flex-end",
         "gap": 4,
         "section_width": "full-width",
-        "section_height": "large",
+        "section_height": "medium",
         "section_height_custom": 100,
         "color_scheme": "scheme-6",
         "toggle_overlay": false,

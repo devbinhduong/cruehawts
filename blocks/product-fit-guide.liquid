@@ -1,0 +1,186 @@
+{%- liquid
+  assign block_settings = block.settings
+  assign fit_position = block_settings.fit_value | default: 'true_to_size'
+-%}
+
+<div class="product-fit-guide" {{ block.shopify_attributes }}>
+  <div class="product-fit-guide__header">
+    <span class="product-fit-guide__title">{{ block_settings.heading | default: 'Fit' }}</span>
+  </div>
+
+  <div class="product-fit-guide__scale">
+    <div class="product-fit-guide__track">
+      <div class="product-fit-guide__segment {% if fit_position == 'small' %}is-active{% endif %}"></div>
+      <div class="product-fit-guide__segment {% if fit_position == 'true_to_size' %}is-active{% endif %}"></div>
+      <div class="product-fit-guide__segment {% if fit_position == 'baggy' %}is-active{% endif %}"></div>
+    </div>
+    <div class="product-fit-guide__labels">
+      <span class="product-fit-guide__label text-left {% if fit_position == 'small' %}is-active{% endif %}">
+        {{ block_settings.left_label | default: 'Small' }}
+      </span>
+      <span class="product-fit-guide__label text-center {% if fit_position == 'true_to_size' %}is-active{% endif %}">
+        {{ block_settings.center_label | default: 'True to size' }}
+      </span>
+      <span class="product-fit-guide__label text-right {% if fit_position == 'baggy' %}is-active{% endif %}">
+        {{ block_settings.right_label | default: 'Baggy' }}
+      </span>
+    </div>
+  </div>
+
+  {%- if block_settings.model_info != blank -%}
+    <div class="product-model-card">
+      {{ block_settings.model_info }}
+    </div>
+  {%- endif -%}
+</div>
+
+{% stylesheet %}
+  .product-fit-guide {
+    width: 100%;
+    margin-block: 8px 14px;
+  }
+
+  .product-fit-guide__header {
+    margin-bottom: 6px;
+  }
+
+  .product-fit-guide__title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #444444;
+  }
+
+  .product-fit-guide__scale {
+    margin-bottom: 12px;
+  }
+
+  .product-fit-guide__track {
+    display: flex;
+    gap: 4px;
+    height: 3px;
+    background-color: transparent;
+    margin-bottom: 8px;
+  }
+
+  .product-fit-guide__segment {
+    flex: 1;
+    height: 100%;
+    background-color: #ddd7cc;
+    border-radius: 1px;
+    transition: background-color 0.2s ease;
+  }
+
+  .product-fit-guide__segment.is-active {
+    background-color: #1a1a1a;
+    height: 4px;
+    margin-top: -0.5px;
+  }
+
+  .product-fit-guide__labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 700;
+    color: #1a1a1a;
+  }
+
+  .product-fit-guide__label {
+    flex: 1;
+  }
+
+  .product-fit-guide__label.text-center {
+    text-align: center;
+  }
+
+  .product-fit-guide__label.text-right {
+    text-align: right;
+  }
+
+  .product-model-card {
+    background-color: #e6e2d9;
+    padding: 9px 14px;
+    border-radius: 2px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: #222222;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 8px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .product-model-card {
+      font-size: 12px;
+      gap: 8px;
+      padding: 8px 10px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Product Fit & Model Info",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Fit"
+    },
+    {
+      "type": "select",
+      "id": "fit_value",
+      "label": "Fit Position",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "true_to_size",
+          "label": "True to size"
+        },
+        {
+          "value": "baggy",
+          "label": "Baggy"
+        }
+      ],
+      "default": "true_to_size"
+    },
+    {
+      "type": "text",
+      "id": "left_label",
+      "label": "Left Label",
+      "default": "Small"
+    },
+    {
+      "type": "text",
+      "id": "center_label",
+      "label": "Center Label",
+      "default": "True to size"
+    },
+    {
+      "type": "text",
+      "id": "right_label",
+      "label": "Right Label",
+      "default": "Baggy"
+    },
+    {
+      "type": "html",
+      "id": "model_info",
+      "label": "Model Info HTML",
+      "default": "<span>Male: 186cm | Size: L</span> <span>Female: 176cm | Size: M</span>"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Fit & Model Info"
+    }
+  ]
+}
+{% endschema %}
+

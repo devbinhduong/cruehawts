@@ -53,7 +53,7 @@
   else
     assign slideshow_class = ''
 
-    if block_settings.media_presentation == 'carousel'
+    if block_settings.media_presentation == 'carousel' and slideshow_controls_style != 'thumbnails'
       assign render_slideshow_arrows = true
     endif
   endif
@@ -329,7 +329,11 @@
           thumbnails: sorted_media,
           controls_on_media: controls_on_media,
           pagination_position: pagination_position,
-          aspect_ratio: block_settings.aspect_ratio
+          aspect_ratio: block_settings.aspect_ratio,
+          show_arrows: true,
+          arrows_on_media: false,
+          icon_style: 'chevron',
+          shape: 'none'
         -%}
       {% endif %}
 

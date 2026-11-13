@@ -1,0 +1,121 @@
+{%- liquid
+  assign block_settings = block.settings
+-%}
+
+<div class="product-trust-badges" {{ block.shopify_attributes }}>
+  <div class="product-trust-badges__container">
+    {%- if block_settings.item_1_text != blank -%}
+      <div class="product-trust-badge">
+        <span class="product-trust-badge__icon product-trust-badge__icon--green">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="8" fill="#4caf50" stroke="#4caf50"/>
+          </svg>
+        </span>
+        <span class="product-trust-badge__text">{{ block_settings.item_1_text }}</span>
+      </div>
+    {%- endif -%}
+
+    {%- if block_settings.item_2_text != blank -%}
+      <div class="product-trust-badge">
+        <span class="product-trust-badge__icon">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+            <line x1="12" y1="22.08" x2="12" y2="12"/>
+          </svg>
+        </span>
+        <span class="product-trust-badge__text">{{ block_settings.item_2_text }}</span>
+      </div>
+    {%- endif -%}
+
+    {%- if block_settings.item_3_text != blank -%}
+      <div class="product-trust-badge">
+        <span class="product-trust-badge__icon">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 12 20 22 4 22 4 12"/>
+            <rect x="2" y="7" width="20" height="5"/>
+            <line x1="12" y1="22" x2="12" y2="7"/>
+            <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/>
+            <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
+          </svg>
+        </span>
+        <span class="product-trust-badge__text">{{ block_settings.item_3_text }}</span>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% stylesheet %}
+  .product-trust-badges {
+    width: 100%;
+    margin-block: 16px 12px;
+  }
+
+  .product-trust-badges__container {
+    background-color: #e6e2d9;
+    padding: 16px 20px;
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .product-trust-badge {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .product-trust-badge__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #333333;
+    flex-shrink: 0;
+  }
+
+  .product-trust-badge__icon--green circle {
+    fill: #5bb35e;
+    stroke: #5bb35e;
+  }
+
+  .product-trust-badge__text {
+    font-size: 14px;
+    font-weight: 700;
+    color: #2b2b2b;
+    letter-spacing: -0.01em;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Product Trust Badges",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "item_1_text",
+      "label": "Item 1 Text",
+      "default": "Shipped within 3-5 business days."
+    },
+    {
+      "type": "text",
+      "id": "item_2_text",
+      "label": "Item 2 Text",
+      "default": "Easy Returns within 14 days."
+    },
+    {
+      "type": "text",
+      "id": "item_3_text",
+      "label": "Item 3 Text",
+      "default": "Free Gifts in random orders."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Trust Badges"
+    }
+  ]
+}
+{% endschema %}
+

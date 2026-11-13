@@ -1,0 +1,67 @@
+{
+  "sections": {
+    "archive_gallery": {
+      "type": "archive-gallery",
+      "blocks": {
+        "banner_1": {
+          "type": "banner",
+          "settings": {
+            "caption": "R419 MYSTIQUE"
+          }
+        },
+        "banner_2": {
+          "type": "banner",
+          "settings": {
+            "caption": "23.10.26"
+          }
+        },
+        "banner_3": {
+          "type": "banner",
+          "settings": {
+            "caption": "HOW TO MAKE AN ADVERT [R419]"
+          }
+        },
+        "banner_4": {
+          "type": "banner",
+          "settings": {
+            "caption": "OCTOBER 2026 [LOOK 1]"
+          }
+        },
+        "banner_5": {
+          "type": "banner",
+          "settings": {
+            "caption": "OCTOBER 2026 [LOOK 2]"
+          }
+        },
+        "banner_6": {
+          "type": "banner",
+          "settings": {
+            "caption": "OCTOBER 2026 [LOOK 3]"
+          }
+        }
+      },
+      "block_order": [
+        "banner_1",
+        "banner_2",
+        "banner_3",
+        "banner_4",
+        "banner_5",
+        "banner_6"
+      ],
+      "settings": {
+        "title": "ARCHIVE",
+        "color_scheme": "scheme-5",
+        "columns_desktop": 3,
+        "columns_mobile": "1",
+        "image_ratio": "adapt",
+        "gap": 24,
+        "max_width": 1400,
+        "padding_top": 60,
+        "padding_bottom": 80
+      }
+    }
+  },
+  "order": [
+    "archive_gallery"
+  ]
+}

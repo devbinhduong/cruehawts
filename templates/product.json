@@ -16,22 +16,22 @@
           "type": "_product-media-gallery",
           "static": true,
           "settings": {
-            "media_presentation": "grid",
+            "media_presentation": "carousel",
             "media_columns": "one",
             "image_gap": 0,
             "large_first_image": false,
-            "icons_style": "arrows_large",
+            "icons_style": "chevron",
             "slideshow_controls_style": "thumbnails",
-            "slideshow_mobile_controls_style": "dots",
+            "slideshow_mobile_controls_style": "counter",
             "thumbnail_position": "bottom",
-            "thumbnail_width": 72,
-            "aspect_ratio": "1/1.25",
+            "thumbnail_width": 64,
+            "aspect_ratio": "1",
             "constrain_to_viewport": true,
-            "media_fit": "cover",
+            "media_fit": "contain",
             "media_radius": 0,
-            "extend_media": false,
-            "zoom": false,
-            "video_loop": false,
+            "extend_media": true,
+            "zoom": true,
+            "video_loop": true,
             "hide_variants": false,
             "padding-block-start": 0,
             "padding-block-end": 0,
@@ -50,7 +50,7 @@
             "custom_width_mobile": 100,
             "height": "fit",
             "details_position": "flex-start",
-            "gap": 28,
+            "gap": 20,
             "sticky_details_desktop": true,
             "inherit_color_scheme": true,
             "color_scheme": "scheme-1",
@@ -113,15 +113,15 @@
                   "name": "t:names.title",
                   "settings": {
                     "width": "100%",
-                    "max_width": "narrow",
+                    "max_width": "normal",
                     "alignment": "left",
                     "type_preset": "custom",
                     "font": "var(--font-heading--family)",
-                    "font_size": "2.5rem",
+                    "font_size": "1.5rem",
                     "line_height": "normal",
                     "letter_spacing": "tight",
                     "case": "uppercase",
-                    "wrap": "nowrap",
+                    "wrap": "pretty",
                     "color": "var(--color-foreground)",
                     "background": false,
                     "background_color": "#00000026",
@@ -160,44 +160,6 @@
                 "product_title_eYVzTU",
                 "price_tVjtKg"
               ]
-            },
-            "divider_VJhene": {
-              "type": "_divider",
-              "name": "t:names.divider",
-              "settings": {
-                "thickness": 1,
-                "corner_radius": "square",
-                "width_percent": 100,
-                "padding-block-start": 0,
-                "padding-block-end": 0
-              },
-              "blocks": {}
-            },
-            "text_yUqy4e": {
-              "type": "text",
-              "name": "t:names.text",
-              "settings": {
-                "text": "<p><strong>Man Model        </strong> 1m80 - 80Kg |     Size XL<br/><strong>Woman Model</strong>           1m67 - 48Kg | Size M</p>",
-                "width": "100%",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "custom",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "tight",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "nowrap",
-                "color": "var(--color-foreground)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
             },
             "group_mHKbK8": {
               "type": "group",
@@ -296,6 +258,7 @@
                       "type": "image",
                       "name": "t:names.image",
                       "settings": {
+                        "image": "{{ closest.product.metafields.custom.size_guide.value.size_guide_image.value }}",
                         "link": "",
                         "image_ratio": "portrait",
                         "width": "fit-content",
@@ -326,6 +289,25 @@
                 "popup_link_bA8QLV"
               ]
             },
+            "stock_banner_block": {
+              "type": "product-stock-banner",
+              "settings": {
+                "text": "Low Stock - Be fast!"
+              },
+              "blocks": {}
+            },
+            "fit_guide_block": {
+              "type": "product-fit-guide",
+              "settings": {
+                "heading": "Fit",
+                "fit_value": "true_to_size",
+                "left_label": "Small",
+                "center_label": "True to size",
+                "right_label": "Baggy",
+                "model_info": "<p><strong>Man Model        </strong> 1m80 - 80Kg |     Size XL<br><strong>Woman Model</strong>           1m67 - 48Kg | Size M</p>"
+              },
+              "blocks": {}
+            },
             "buy_buttons_eYQEYi": {
               "type": "buy-buttons",
               "settings": {
@@ -354,7 +336,6 @@
                 },
                 "accelerated-checkout": {
                   "type": "accelerated-checkout",
-                  "disabled": true,
                   "static": true,
                   "settings": {},
                   "blocks": {}
@@ -362,11 +343,20 @@
               },
               "block_order": []
             },
+            "trust_badges_block": {
+              "type": "product-trust-badges",
+              "settings": {
+                "item_1_text": "Shipped within 3-5 business days.",
+                "item_2_text": "Easy Returns within 14 days.",
+                "item_3_text": "Free Gifts in random orders."
+              },
+              "blocks": {}
+            },
             "accordion_CiVyHi": {
               "type": "accordion",
               "name": "t:names.accordion",
               "settings": {
-                "icon": "caret",
+                "icon": "plus",
                 "dividers": true,
                 "type_preset": "h5",
                 "inherit_color_scheme": true,
@@ -381,20 +371,20 @@
                 "padding-inline-end": 0
               },
               "blocks": {
-                "accordion_row_G79tPA": {
+                "accordion_row_description": {
                   "type": "_accordion-row",
                   "settings": {
-                    "heading": "Delivery",
+                    "heading": "Description",
                     "open_by_default": false,
                     "icon": "none",
                     "width": 20
                   },
                   "blocks": {
-                    "text_i9PLmR": {
-                      "type": "text",
+                    "text_desc": {
+                      "type": "product-description",
                       "settings": {
-                        "text": "<p> Orders will be processed every day from Monday to Saturday, delivery time is 7-14 days depending on the region.</p>",
-                        "width": "100%",
+                        "text": "{{ closest.product.description }}",
+                        "width": "fit-content",
                         "max_width": "normal",
                         "alignment": "left",
                         "type_preset": "rte",
@@ -417,36 +407,33 @@
                     }
                   },
                   "block_order": [
-                    "text_i9PLmR"
+                    "text_desc"
                   ]
                 },
-                "accordion_row_txyzxT": {
+                "accordion_row_sizeguide": {
                   "type": "_accordion-row",
                   "settings": {
-                    "heading": "Shipping Fee",
+                    "heading": "Size Guide",
                     "open_by_default": false,
                     "icon": "none",
                     "width": 20
                   },
                   "blocks": {
-                    "text_FkDnxF": {
-                      "type": "text",
+                    "image_sg_acc": {
+                      "type": "image",
                       "settings": {
-                        "text": "<p>$10 - $20 depending on the region (Multiple items, additional shipping fees will apply.) </p>",
-                        "width": "100%",
-                        "max_width": "normal",
-                        "alignment": "left",
-                        "type_preset": "rte",
-                        "font": "var(--font-body--family)",
-                        "font_size": "1rem",
-                        "line_height": "normal",
-                        "letter_spacing": "normal",
-                        "case": "none",
-                        "wrap": "pretty",
-                        "color": "var(--color-foreground)",
-                        "background": false,
-                        "background_color": "#00000026",
-                        "corner_radius": 0,
+                        "image": "{{ closest.product.metafields.custom.size_guide.value.size_guide_image.value }}",
+                        "link": "",
+                        "image_ratio": "adapt",
+                        "width": "fill",
+                        "custom_width": 100,
+                        "width_mobile": "fill",
+                        "custom_width_mobile": 100,
+                        "height": "fit",
+                        "border": "none",
+                        "border_width": 1,
+                        "border_opacity": 100,
+                        "border_radius": 0,
                         "padding-block-start": 0,
                         "padding-block-end": 0,
                         "padding-inline-start": 0,
@@ -456,22 +443,22 @@
                     }
                   },
                   "block_order": [
-                    "text_FkDnxF"
+                    "image_sg_acc"
                   ]
                 },
-                "accordion_row_pD7NxJ": {
+                "accordion_row_delivery": {
                   "type": "_accordion-row",
                   "settings": {
-                    "heading": "Return policy",
-                    "open_by_default": true,
+                    "heading": "Delivery & Return",
+                    "open_by_default": false,
                     "icon": "none",
                     "width": 20
                   },
                   "blocks": {
-                    "text_67zdHn": {
+                    "text_delivery": {
                       "type": "text",
                       "settings": {
-                        "text": "<p>We will soon find the best solution to provide this service in the near future.</p>",
+                        "text": "<p>Orders are shipped within 3-5 business days. Easy returns accepted within 14 days of delivery.</p>",
                         "width": "100%",
                         "max_width": "normal",
                         "alignment": "left",
@@ -495,23 +482,24 @@
                     }
                   },
                   "block_order": [
-                    "text_67zdHn"
+                    "text_delivery"
                   ]
                 }
               },
               "block_order": [
-                "accordion_row_G79tPA",
-                "accordion_row_txyzxT",
-                "accordion_row_pD7NxJ"
+                "accordion_row_description",
+                "accordion_row_sizeguide",
+                "accordion_row_delivery"
               ]
             }
           },
           "block_order": [
             "group_icgrde",
-            "divider_VJhene",
-            "text_yUqy4e",
             "group_mHKbK8",
+            "stock_banner_block",
+            "fit_guide_block",
             "buy_buttons_eYQEYi",
+            "trust_badges_block",
             "accordion_CiVyHi"
           ]
         }
@@ -520,11 +508,11 @@
         "content_width": "content-center-aligned",
         "desktop_media_position": "left",
         "equal_columns": true,
-        "limit_details_width": true,
-        "gap": 12,
+        "limit_details_width": false,
+        "gap": 32,
         "color_scheme": "scheme-1",
-        "padding-block-start": 0,
-        "padding-block-end": 24
+        "padding-block-start": 16,
+        "padding-block-end": 48
       }
     },
     "product_recommendations_H8kFqW": {

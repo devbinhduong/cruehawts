@@ -1,0 +1,66 @@
+{%- liquid
+  assign block_settings = block.settings
+-%}
+
+<div class="product-stock-banner" {{ block.shopify_attributes }}>
+  <div class="product-stock-banner__container">
+    <span class="product-stock-banner__dot"></span>
+    <span class="product-stock-banner__text">{{ block_settings.text | default: 'Low Stock - Be fast!' }}</span>
+  </div>
+</div>
+
+{% stylesheet %}
+  .product-stock-banner {
+    width: 100%;
+    margin-block: 8px 12px;
+  }
+
+  .product-stock-banner__container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px 16px;
+    background-color: #eeeae2;
+    border: 1px solid #ddd7cc;
+    border-radius: 2px;
+  }
+
+  .product-stock-banner__dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background-color: #d82b2b;
+    display: inline-block;
+    flex-shrink: 0;
+    box-shadow: 0 0 0 2px rgba(216, 43, 43, 0.2);
+  }
+
+  .product-stock-banner__text {
+    font-size: 14px;
+    font-weight: 700;
+    color: #222222;
+    letter-spacing: 0.01em;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Product Stock Banner",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "Low Stock - Be fast!"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Stock Banner"
+    }
+  ]
+}
+{% endschema %}
+
